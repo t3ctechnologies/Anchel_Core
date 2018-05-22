@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.t3c.anchel.core.domain.entities.UploadRequestUrl"
+		table="upload_request_url" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<many-to-one name="contact" cascade="lock" column="contact_id"
+			class="com.t3c.anchel.core.domain.entities.Contact" not-null="true"
+			fetch="join"
+			lazy="no-proxy">
+		</many-to-one>
+		<many-to-one name="uploadRequest" cascade="lock"
+			column="upload_request_id" class="com.t3c.anchel.core.domain.entities.UploadRequest"
+			not-null="true" lazy="no-proxy">
+		</many-to-one>
+		<property name="uuid" column="uuid" unique="true" type="string"
+			length="255" not-null="true" lazy="false" />
+		<property name="path" column="path" type="string" length="255"
+			not-null="true" lazy="false" />
+		<property name="password" column="password" type="string"
+			length="255" not-null="false" lazy="false" />
+		<property name="creationDate" column="creation_date" type="timestamp"
+			length="6" not-null="true" lazy="false" />
+		<property name="modificationDate" column="modification_date"
+			type="timestamp" length="6" not-null="true" lazy="false" />
+		<set name="uploadRequestEntries" lazy="true" cascade="lock"
+			inverse="true">
+			<key column="upload_request_url_id" not-null="true" />
+			<one-to-many
+				class="com.t3c.anchel.core.domain.entities.UploadRequestEntry" />
+		</set>
+	</class>
+</hibernate-mapping>

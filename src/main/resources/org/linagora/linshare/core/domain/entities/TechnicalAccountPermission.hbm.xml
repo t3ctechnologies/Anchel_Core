@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.t3c.anchel.core.domain.entities.TechnicalAccountPermission" table="technical_account_permission" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+
+		<property name="uuid" column="uuid" unique="true" type="string" length="255" not-null="true" lazy="false"/>
+		<property name="creationDate" column="creation_date" type="timestamp" not-null="true" lazy="false"/>
+		<property name="modificationDate" column="modification_date" type="timestamp" not-null="true" lazy="false"/>
+
+		<set name="accountPermissions" lazy="true" cascade="all-delete-orphan" inverse="false">
+			<key column="technical_account_permission_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.AccountPermission"/>
+		</set>
+
+		<set name="domains" table="technical_account_permission_domain_abstract" lazy="true">
+			<key column="technical_account_permission_id" not-null="true"/>
+			<many-to-many column="domain_abstract_id" class="com.t3c.anchel.core.domain.entities.AbstractDomain">
+			</many-to-many>
+		</set>
+	</class>
+</hibernate-mapping>

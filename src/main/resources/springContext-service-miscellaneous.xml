@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="    
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-autowire="no">
+
+	<bean name="passwordService"
+		class="com.t3c.anchel.core.service.impl.PasswordServiceImpl">
+	</bean>
+
+	<bean id="logEntryService"
+		class="com.t3c.anchel.core.service.impl.LogEntryServiceImpl">
+		<constructor-arg ref="logEntryRepository" />
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="auditUserMongoRepository" />
+		<constructor-arg ref="eventNotificationMongoRepository" />
+	</bean>
+
+	<bean name="accountService"
+		class="com.t3c.anchel.core.service.impl.AccountServiceImpl">
+		<constructor-arg ref="accountRepository" />
+	</bean>
+
+	<bean id="antiSamyService"
+		class="com.t3c.anchel.core.service.impl.AntiSamyServiceImpl">
+		<constructor-arg ref="antiSamyPolicy" />
+	</bean>
+
+	<bean id="timeStampingService"
+		class="com.t3c.anchel.core.service.impl.TimeStampingServiceImpl">
+	</bean>
+
+	<bean name="functionalityReadOnlyService"
+		class="com.t3c.anchel.core.service.impl.FunctionalityReadOnlyServiceImpl">
+		<constructor-arg ref="functionalityRepository" />
+		<constructor-arg ref="domainBusinessService" />
+	</bean>
+
+	<bean name="functionalityService"
+		class="com.t3c.anchel.core.service.impl.FunctionalityServiceImpl">
+		<constructor-arg ref="functionalityBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+		<constructor-arg ref="auditAdminMongoRepository" />
+	</bean>
+
+	<bean name="mailActivationService"
+		class="com.t3c.anchel.core.service.impl.MailActivationServiceImpl">
+		<constructor-arg ref="mailActivationBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+	</bean>
+
+	<bean name="domainPolicyService"
+		class="com.t3c.anchel.core.service.impl.DomainPolicyServiceImpl">
+		<constructor-arg ref="domainPolicyBusinessService" />
+	</bean>
+
+	<bean id="welcomeMessagesService"
+		class="com.t3c.anchel.core.service.impl.WelcomeMessagesServiceImpl">
+		<constructor-arg ref="welcomeMessagesBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+	</bean>
+
+	<bean name="mailBuildingService"
+		class="com.t3c.anchel.core.notifications.service.impl.MailBuildingServiceImpl">
+		<constructor-arg ref="mailConfigBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="mailActivationBusinessService" />
+		<constructor-arg value="${linshare.display.licenceTerm}" />
+		<constructor-arg value="${linshare.user.url.download.receivedshares}" />
+		<constructor-arg value="${linshare.user.url.download.documents}" />
+		<constructor-arg value="${linshare.user.url.guest.reset}" />
+		<constructor-arg value="${linshare.user.url.anonymousurl.link}" />
+		<constructor-arg value="${linshare.notifications.email.templating.strict.mode}" />
+		<constructor-arg value="${linshare.notifications.email.templating.subject.prefix.enable}" />
+	</bean>
+
+	<bean name="ldapConnectionService"
+		class="com.t3c.anchel.core.service.impl.LdapConnectionServiceImpl">
+		<constructor-arg ref="ldapConnectionRepository" />
+	</bean>
+
+	<bean name="userProviderService"
+		class="com.t3c.anchel.core.service.impl.UserProviderServiceImpl">
+		<constructor-arg ref="domainPatternRepository" />
+		<constructor-arg ref="ldapQueryService" />
+		<constructor-arg ref="userProviderRepository" />
+		<constructor-arg ref="ldapUserProviderRepository" />
+		<constructor-arg ref="auditAdminMongoRepository" />
+	</bean>
+
+	<bean id="mimePolicyService"
+		class="com.t3c.anchel.core.service.impl.MimePolicyServiceImpl">
+		<constructor-arg ref="mimePolicyBusinessService" />
+		<constructor-arg ref="mimeTypeBusinessService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+	</bean>
+
+	<bean id="mimeTypeService"
+		class="com.t3c.anchel.core.service.impl.MimeTypeServiceImpl">
+		<constructor-arg ref="mimeTypeBusinessService" />
+		<constructor-arg ref="mimePolicyBusinessService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+	</bean>
+
+	<bean name="mailConfigService"
+		class="com.t3c.anchel.core.service.impl.MailConfigServiceImpl">
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="mailConfigBusinessService" />
+		<constructor-arg ref="mailContentBusinessService" />
+		<constructor-arg ref="mailFooterBusinessService" />
+		<constructor-arg ref="mailLayoutBusinessService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+		<constructor-arg value="${linshare.notifications.email.templating.override.readonly.mode}" />
+	</bean>
+
+	<bean id="virusScannerService" class="com.t3c.anchel.core.service.impl.VirusScannerServiceImpl">
+		<constructor-arg ref="virusScannerBusinessService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg value="${virusscanner.limit.filesize}" />
+	</bean>
+</beans>

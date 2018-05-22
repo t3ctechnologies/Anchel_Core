@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="no">
+
+	<bean id="wsDocumentFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.DocumentFacadeImpl">
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mimePolicyService" />
+		<constructor-arg ref="shareService" />
+		<constructor-arg ref="entryBusinessService" />
+		<constructor-arg ref="signatureService" />
+		<constructor-arg ref="auditLogEntryService" />
+	</bean>
+	<bean id="wsLogEntryFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.LogEntryFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="logEntryService" />
+	</bean>
+	<bean id="wsShareFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.ShareFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="shareService" />
+		<constructor-arg ref="shareEntryService" />
+		<constructor-arg ref="entryBusinessService" />
+		<constructor-arg ref="mailingListService" />
+		<constructor-arg ref="auditLogEntryService" />
+	</bean>
+	<bean id="wsThreadFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.ThreadFacadeImpl">
+		<constructor-arg ref="threadService" />
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="quotaService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="auditLogEntryService" />
+	</bean>
+	<bean id="wsThreadMemberFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.ThreadMemberFacadeImpl">
+		<constructor-arg ref="threadService" />
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userService" />
+	</bean>
+	<bean id="wsUserFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.UserFacadeImpl">
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="quotaService" />
+	</bean>
+	<bean id="wsGuestFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.GuestFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="guestService" />
+	</bean>
+	<bean id="wsFunctionalityFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.FunctionalityFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="functionalityService" />
+	</bean>
+
+	<bean id="wsAutoCompleteFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.AutoCompleteFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="mailingListService" />
+		<constructor-arg ref="threadService" />
+		<constructor-arg ref="recipientFavouriteRepository" />
+	</bean>
+	<bean id="wsShareEntryGroupFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.ShareEntryGroupFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="shareEntryGroupService" />
+	</bean>
+	<bean id="wsMailingListFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.MailingListFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailingListService" />
+	</bean>
+	<bean id="wsContactListFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.ContactListFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailingListService" />
+		<constructor-arg ref="auditLogEntryService" />
+	</bean>
+	<bean id="wsMimeTypeFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.MimeTypeFacadeImpl">
+	        <constructor-arg ref="accountService" />
+	</bean>
+
+	<bean id="wsStatisticFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.StatisticFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="statisticService"/>
+	</bean>
+
+	<bean id="wsUploadRequestFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.UploadRequestFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="uploadRequestService" />
+	</bean>
+
+	<bean id="wsUploadRequestGroupFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.UploadRequestGroupFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="uploadRequestService" />
+	</bean>
+
+	<bean id="wsUploadRequestTemplateFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.UploadRequestTemplateFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="uploadRequestService" />
+	</bean>
+
+	<bean id="wsUserPreferenceFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.UserPreferenceFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userPreferenceService"/>
+	</bean>
+
+	<bean id="wsAuditLogEntryUserFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.AuditLogEntryUserFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="auditLogEntryService"/>
+	</bean>
+
+	<bean id="wsWorkGroupNodeFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.WorkGroupNodeFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="threadService" />
+		<constructor-arg ref="workGroupNodeService"/>
+		<constructor-arg ref="functionalityReadOnlyService"/>
+		<constructor-arg ref="auditLogEntryService" />
+	</bean>
+
+	<bean id="wsAccountQuotaFacade" class="com.t3c.anchel.core.facade.webservice.user.impl.AccountQuotaFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="quotaService" />
+	</bean>
+
+	<bean id="wsWelcomeMessagesFacadeImpl" class="com.t3c.anchel.core.facade.webservice.user.impl.WelcomeMessagesFacadeImpl">
+		<constructor-arg ref="accountService" />
+	</bean>
+
+</beans>

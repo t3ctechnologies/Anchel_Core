@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="    
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-autowire="no">
+
+
+	<bean name="threadService" class="com.t3c.anchel.core.service.impl.ThreadServiceImpl">
+		<constructor-arg ref="threadRepository" />
+		<constructor-arg ref="threadMemberRepository" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="threadResourceAccessControl" />
+		<constructor-arg ref="threadMemberResourceAccessControl" />
+		<constructor-arg ref="userRepository" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="accountQuotaBusinessService"/>
+		<constructor-arg ref="containerQuotaBusinessService"/>
+		<constructor-arg ref="workGroupNodeService"/>
+	</bean>
+
+	<bean name="userService" class="com.t3c.anchel.core.service.impl.UserServiceImpl">
+		<constructor-arg ref="userRepository" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="guestRepository" />
+		<constructor-arg ref="allowedContactRepository" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="entryService" />
+		<constructor-arg ref="threadService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+		<constructor-arg ref="mailingListContactRepository" />
+		<constructor-arg ref="recipientFavouriteRepository" />
+		<constructor-arg ref="accountQuotaBusinessService"/>
+		<constructor-arg ref="containerQuotaBusinessService"/>
+	</bean>
+
+	<bean name="inconsistentUserService" class="com.t3c.anchel.core.service.impl.InconsistentUserServiceImpl">
+		<constructor-arg ref="internalRepository" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+
+	<bean id="documentEntryService" class="com.t3c.anchel.core.service.impl.DocumentEntryServiceImpl">
+		<constructor-arg ref="documentEntryBusinessService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="mimeTypeService" />
+		<constructor-arg ref="virusScannerService" />
+		<constructor-arg ref="mimeTypeMagicNumberDao" />
+		<constructor-arg ref="antiSamyService" />
+		<constructor-arg ref="documentEntryResourceAccessControl" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="operationHistoryBusinessService" />
+		<constructor-arg ref="quotaService"/>
+	</bean>
+
+	<bean id="shareExpiryDateService" class="com.t3c.anchel.core.service.impl.ShareExpiryDateServiceImpl">
+		<constructor-arg ref="functionalityReadOnlyService" />
+	</bean>
+
+	<bean id="entryService" class="com.t3c.anchel.core.service.impl.EntryServiceImpl">
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="shareEntryService" />
+		<constructor-arg ref="anonymousShareEntryService" />
+	</bean>
+
+	<bean id="shareEntryService" class="com.t3c.anchel.core.service.impl.ShareEntryServiceImpl">
+		<constructor-arg ref="guestRepository" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="shareEntryBusinessService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="documentEntryBusinessService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="recipientFavouriteRepository" />
+		<constructor-arg ref="shareEntryResourceAccessControl" />
+	</bean>
+
+	<bean id="anonymousShareEntryService" class="com.t3c.anchel.core.service.impl.AnonymousShareEntryServiceImpl">
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="anonymousShareEntryBusinessService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="documentEntryBusinessService" />
+		<constructor-arg ref="recipientFavouriteRepository" />
+		<constructor-arg ref="anonymousShareEntryResourceAccessControl" />
+	</bean>
+
+	<bean id="anonymousUrlService" class="com.t3c.anchel.core.service.impl.AnonymousUrlServiceImpl">
+		<constructor-arg ref="anonymousUrlBusinessService" />
+		<constructor-arg ref="anonymousShareEntryService" />
+	</bean>
+
+	<bean name="enciphermentService" class="com.t3c.anchel.core.service.impl.EnciphermentServiceAesCryptImpl">
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg value="${linshare.encipherment.tmp.dir}" />
+	</bean>
+
+	<bean name="statisticsService" class="com.t3c.anchel.core.service.impl.StatisticsServiceImpl">
+		<constructor-arg ref="userRepository" />
+		<constructor-arg ref="documentRepository" />
+		<constructor-arg ref="logEntryRepository" />
+	</bean>
+
+	<bean name="abstractDomainService" class="com.t3c.anchel.core.service.impl.AbstractDomainServiceImpl">
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="abstractDomainRepository" />
+		<constructor-arg ref="domainPolicyService" />
+		<constructor-arg ref="userProviderService" />
+		<constructor-arg ref="userRepository" />
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="mailConfigBusinessService" />
+		<constructor-arg ref="mimePolicyBusinessService" />
+		<constructor-arg ref="welcomeMessagesService" />
+		<constructor-arg ref="auditAdminMongoRepository" />
+		<constructor-arg ref="domainAccessPolicyBusinessService" />
+		<constructor-arg ref="domainQuotaBusinessService" />
+		<constructor-arg ref="containerQuotaBusinessService"/>
+	</bean>
+
+	<bean name="userAndDomainMultiService" class="com.t3c.anchel.core.service.impl.UserAndDomainMultiServiceImpl">
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="userService" />
+	</bean>
+
+	<bean name="signatureService" class="com.t3c.anchel.core.service.impl.SignatureServiceImpl">
+		<constructor-arg ref="signatureBusinessService" />
+		<constructor-arg ref="logEntryService" />
+	</bean>
+
+	<bean name="mailingListService" class="com.t3c.anchel.core.service.impl.MailingListServiceImpl">
+		<constructor-arg ref="mailingListBusinessService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="mailingListResourceAccessControl" />
+		<constructor-arg ref="logEntryService" />
+	</bean>
+
+	<bean name="uploadRequestService" class="com.t3c.anchel.core.service.impl.UploadRequestServiceImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="uploadRequestBusinessService" />
+		<constructor-arg ref="uploadRequestGroupBusinessService" />
+		<constructor-arg ref="uploadRequestHistoryBusinessService" />
+		<constructor-arg ref="uploadRequestTemplateBusinessService" />
+		<constructor-arg ref="uploadRequestUrlService" />
+		<constructor-arg ref="domainPermissionBusinessService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="uploadRequestResourceAccessControl" />
+		<constructor-arg ref="uploadRequestTemplateResourceAccessControl" />
+		<constructor-arg ref="uploadRequestGroupResourceAccessControl" />
+		<constructor-arg ref="logEntryService" />
+	</bean>
+
+	<bean name="guestService" class="com.t3c.anchel.core.service.impl.GuestServiceImpl">
+		<constructor-arg ref="guestBusinessService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="guestResourceAccessControl" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="containerQuotaBusinessService"/>
+		<constructor-arg ref="resetGuestPasswordMongoRepository"/>
+		<constructor-arg ref="accountQuotaBusinessService"/>
+	</bean>
+
+	<bean name="technicalAccountService" class="com.t3c.anchel.core.service.impl.TechnicalAccountServiceImpl">
+		<constructor-arg ref="technicalAccountBusinessService" />
+		<constructor-arg ref="technicalAccountPermissionService" />
+	</bean>
+
+	<bean id="technicalAccountPermissionService" class="com.t3c.anchel.core.service.impl.TechnicalAccountPermissionServiceImpl">
+		<constructor-arg ref="technicalAccountPermissionBusinessService" />
+	</bean>
+	<bean name="uploadRequestUrlService" class="com.t3c.anchel.core.service.impl.UploadRequestUrlServiceImpl">
+		<constructor-arg ref="uploadRequestUrlBusinessService" />
+		<constructor-arg ref="uploadRequestEntryBusinessService" />
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+	</bean>
+	<bean name="uploadPropositionService" class="com.t3c.anchel.core.service.impl.UploadPropositionServiceImpl">
+		<constructor-arg ref="uploadPropositionBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+		<constructor-arg ref="uploadRequestService" />
+		<constructor-arg ref="uploadRequestUrlService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+	</bean>
+	<bean id="uploadPropositionFilterService" class="com.t3c.anchel.core.service.impl.UploadPropositionFilterServiceImpl">
+		<constructor-arg ref="uploadPropositionFilterBusinessService" />
+		<constructor-arg ref="domainBusinessService" />
+	</bean>
+	<bean name="shareService" class="com.t3c.anchel.core.service.impl.ShareServiceImpl">
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="guestService" />
+		<constructor-arg ref="anonymousShareEntryService" />
+		<constructor-arg ref="shareEntryService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="entryBusinessService" />
+		<constructor-arg ref="shareEntryResourceAccessControl" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="shareEntryGroupService" />
+		<constructor-arg ref="shareExpiryDateService" />
+	</bean>
+	<bean id="shareEntryGroupService" class="com.t3c.anchel.core.service.impl.ShareEntryGroupServiceImpl">
+		<constructor-arg ref="shareEntryGroupBusinessService" />
+		<constructor-arg ref="shareEntryService" />
+		<constructor-arg ref="anonymousShareEntryService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="shareEntryGroupResourceAccessControl" />
+	</bean>
+	<bean id="asyncTaskService" class="com.t3c.anchel.core.service.impl.AsyncTaskServiceImpl">
+		<constructor-arg ref="asyncTaskBusinessService" />
+		<constructor-arg ref="asyncTaskResourceAccessControl" />
+	</bean>
+	<bean id="userPreferenceService" class="com.t3c.anchel.core.service.impl.UserPreferenceServiceImpl">
+		<constructor-arg ref="userPreferenceMongoRepository" />
+		<constructor-arg ref="userPreferenceResourceAccessControl" />
+		<constructor-arg ref="auditUserMongoRepository" />
+	</bean>
+	<bean id="auditLogEntryService" class="com.t3c.anchel.core.service.impl.AuditLogEntryServiceImpl">
+		<constructor-arg ref="auditAdminMongoRepository" />
+		<constructor-arg ref="auditUserMongoRepository" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="auditLogEntryResourceAccessControl" />
+	</bean>
+	<bean id="statisticService" class="com.t3c.anchel.core.service.impl.StatisticServiceImpl">
+		<constructor-arg ref="statisticBusinessService" />
+		<constructor-arg ref="statisticResourceAccessControl" />
+	</bean>
+	<bean id="quotaService" class="com.t3c.anchel.core.service.impl.QuotaServiceImpl">
+		<constructor-arg ref="quotaResourceAccessControl" />
+		<constructor-arg ref="accountQuotaBusinessService" />
+		<constructor-arg ref="domainQuotaBusinessService" />
+		<constructor-arg ref="containerQuotaBusinessService" />
+		<constructor-arg ref="operationHistoryBusinessService" />
+	</bean>
+	<bean id="accountQuotaService" class="com.t3c.anchel.core.service.impl.AccountQuotaServiceImpl">
+		<constructor-arg ref="accountQuotaBusinessService" />
+		<constructor-arg ref="quotaResourceAccessControl" />
+	</bean>
+	<bean id="domainQuotaService" class="com.t3c.anchel.core.service.impl.DomainQuotaServiceImpl">
+		<constructor-arg ref="domainQuotaBusinessService" />
+		<constructor-arg ref="quotaResourceAccessControl" />
+	</bean>
+	<bean id="containerQuotaService" class="com.t3c.anchel.core.service.impl.ContainerQuotaServiceImpl">
+		<constructor-arg ref="containerQuotaBusinessService" />
+		<constructor-arg ref="quotaResourceAccessControl" />
+	</bean>
+	<bean id="resetGuestPasswordService" class="com.t3c.anchel.core.service.impl.ResetGuestPasswordServiceImpl">
+		<constructor-arg ref="resetGuestPasswordMongoRepository" />
+		<constructor-arg ref="guestService" />
+	</bean>
+
+	<bean id="workGroupFolderService" class="com.t3c.anchel.core.service.impl.WorkGroupFolderServiceImpl">
+		<constructor-arg ref="workGroupNodeMongoRepository" />
+		<constructor-arg ref="threadMemberRepository" />
+		<constructor-arg ref="mongoTemplate" />
+		<constructor-arg ref="antiSamyService" />
+		<constructor-arg ref="logEntryService" />
+	</bean>
+
+	<bean id="workGroupNodeService" class="com.t3c.anchel.core.service.impl.WorkGroupNodeServiceImpl">
+		<constructor-arg ref="workGroupNodeMongoRepository" />
+		<constructor-arg ref="workGroupDocumentService" />
+		<constructor-arg ref="workGroupFolderService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="antiSamyService" />
+		<constructor-arg ref="mongoTemplate" />
+		<constructor-arg ref="workGroupNodeResourceAccessControl" />
+	</bean>
+
+	<bean id="workGroupDocumentService" class="com.t3c.anchel.core.service.impl.WorkGroupDocumentServiceImpl">
+		<constructor-arg ref="workGroupNodeMongoRepository" />
+		<constructor-arg ref="threadMemberRepository" />
+		<constructor-arg ref="mongoTemplate" />
+		<constructor-arg ref="documentEntryBusinessService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="mimeTypeService" />
+		<constructor-arg ref="virusScannerService" />
+		<constructor-arg ref="mimeTypeMagicNumberDao" />
+		<constructor-arg ref="antiSamyService" />
+		<constructor-arg ref="operationHistoryBusinessService" />
+		<constructor-arg ref="quotaService"/>
+	</bean>
+
+	<bean id="upgradeTaskService" class="com.t3c.anchel.core.service.impl.UpgradeTaskServiceImpl">
+		<constructor-arg ref="upgradeTaskBusinessService" />
+	</bean>
+</beans>

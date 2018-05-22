@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="com.t3c.anchel.core.domain.entities">
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="technicalAccountPermissionType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.TechnicalAccountPermissionType</param>
+		<param name="identifierMethod">name</param>
+		<param name="valueOfMethod">fromString</param>
+	</typedef>
+	<class name="com.t3c.anchel.core.domain.entities.AccountPermission"
+		table="account_permission" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<property access="field"  name="permission" column="permission" type="technicalAccountPermissionType" length="255" not-null="true" lazy="false" />
+	</class>
+</hibernate-mapping>

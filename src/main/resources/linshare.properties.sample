@@ -1,0 +1,172 @@
+# In order to use an external configuration file for linshare, use this key for JAVA_OPS
+# JAVA_OPTS="${JAVA_OPTS} -Djava.awt.headless=true -Xms512m -Xmx2048m"
+# JAVA_OPTS="${JAVA_OPTS} -Dlinshare.config.path=file:/etc/linshare/"
+# JAVA_OPTS="${JAVA_OPTS} -Dlog4j.configuration=file:/etc/linshare/log4j.properties"
+# JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=default,jcloud,mongo"
+# On Centos, use only one JAVA_OPTS statement. Do not use the previous syntax, it may not work.
+
+# Or you can use environment variable : SPRING_PROFILES_ACTIVE or -Dspring.profiles.active property
+# to configure which profile you want to use.
+# You must enable at least one authentication profile among authentication profiles,
+# one profile among file data store profiles and one among mongodb profiles described below.
+
+
+
+# Available authentication profiles :
+#	* default : default authentication process.
+#	* sso : Enable headers injection for SSO. This profile includes default profile capabilities
+
+# Available file data store profiles :
+#	* jcloud : Using jcloud as file data store : Amazon S3, Swift, Ceph, filesystem (test only).
+#	* gridfs : Using gridfs (mongodb) as file data store.
+#	* jackrabbit2 : Using jackrabbit as file data store. (deprecated)
+#	* jackrabbit-to-jcloud : Using Jcloud as new file data store, jackrabbit as fallback file data store.
+#	* jackrabbit-to-gridfs : Using Jcloud as new file data store, jackrabbit as fallback file data store.
+#	Recommended profile for production is jcloud with Swift.
+
+# Available mongodb profiles :
+#	* mongo : mongo with authentication disable
+#	* mongo-auth : mongo with authentication enable
+
+
+#******************** MAIL CONFIGURATION TO SEND MAIL INFORMATION TO USER
+
+mail.smtp.host=smtp.yourdomain.com
+mail.smtp.port=25
+mail.smtp.user=user
+mail.smtp.password=password
+mail.smtp.auth.needed=false
+mail.smtp.charset=UTF-8
+
+#******************* DATASTORE
+#uncomment this line to encrypt the files
+#linshare.datastore.class=com.t3c.anchel.core.dao.EncDbDataStore
+
+#******************** DATABASE
+### PostgreSQL
+linshare.db.username=linshare
+linshare.db.password=linshare
+linshare.db.driver.class=org.postgresql.Driver
+linshare.db.url=jdbc:postgresql://localhost:5432/linshare
+linshare.db.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+#show sql command in console (true in debug mode)
+linshare.db.show_sql=false
+#format sql command in console (true in debug mode)
+linshare.db.format_sql=false
+#generate statistics with hibernate
+linshare.db.gen_stats=false
+# can be create, create-drop, update, validate, choose validate for production
+linshare.db.hbm2ddl.auto=validate
+
+
+#******************** GENERAL PROPERTIES
+
+######## Storage options ########
+
+
+#### Global storage options ####
+# available storage mode :
+# * filesystem : storing documents on file system for  tests
+# * swift-keystone : storing documents into swift
+linshare.documents.storage.mode=filesystem
+linshare.documents.storage.bucket=e0531829-8a75-49f8-bb30-4539574d66c7
+
+# Temporary directory : local work directory to encrypt/decrypt data
+linshare.encipherment.tmp.dir=/var/lib/linshare/tmp
+
+#### File system storage options - default backend####
+linshare.documents.storage.filesystem.directory=/var/lib/linshare/filesystemstorage
+
+######## Extended storage options ########
+
+#### JackRabbit storage options ####
+# JackRabbit is deprecated but is is still in LinShare for upgrade purpose from v1 to v2.
+# you have to uncomment and set the directory parameter according to your previous configuration file.
+# linshare.files.directory=${LINSHARE_HOME}/var/lib/linshare/repository
+# linshare.db.persistence_manager=org.apache.jackrabbit.core.persistence.pool.PostgreSQLPersistenceManager
+
+
+#### Swift storage options ####
+linshare.documents.storage.swift.identity=tenant_name:user_name
+linshare.documents.storage.swift.credential=password
+linshare.documents.storage.swift.endpoint=http://127.0.0.1:5000/v2.0
+
+#### GridFS storage options ####
+linshare.mongo.host=127.0.0.1
+linshare.mongo.port=27017
+linshare.mongo.user=linshare
+linshare.mongo.password=linshare
+linshare.mongo.database=linshare
+
+linshare.mongo.gridfs.smallfiles.host=127.0.0.1
+linshare.mongo.gridfs.smallfiles.port=27017
+linshare.mongo.gridfs.smallfiles.user=linshare
+linshare.mongo.gridfs.smallfiles.password=linshare
+linshare.mongo.gridfs.smallfiles.database=linshare-files
+
+#### Extended GridFS storage options ####
+# Store all files in MongoDB GridFS. Not recommended.
+linshare.mongo.gridfs.bigfiles.host=127.0.0.1
+linshare.mongo.gridfs.bigfiles.port=27017
+linshare.mongo.gridfs.bigfiles.user=linshare
+linshare.mongo.gridfs.bigfiles.password=linshare
+linshare.mongo.gridfs.bigfiles.database=linshare-bigfiles
+
+######## Storage options - end ########
+
+
+
+# webservice
+webservice.attachment-memory-threshold=4000000
+webservice.attachment-directory=/tmp/
+
+
+#******************** VIRUS SCANNER
+#uncomment those properties if you want to enable clamav virus scanner feature
+#virusscanner.clamav.host=localhost
+#virusscanner.clamav.port=3310
+# Every file which size is over than the value below (in bytes) will skip the virus scanner.
+# virusscanner.limit.filesize=50000000
+
+
+#******************** SSO 
+# LemonLDAP::NG / SiteMinder HTTP request authenticator
+sso.header.user=Auth-User
+# comma separated list of ip address to be trusted :  
+sso.header.allowfrom=127.0.0.1
+
+
+#******************** Syntax for CRON
+# 	 Field				Mandatory	Allowed Values			Allowed Special Characters
+# 1. Second				yes			0-59					, - * /	
+# 2. Minutes			yes			0-59					, - * /
+# 3. Hours				yes			0-23					, - * /
+# 4. Day of month		yes			1-31					, - * ? / L W
+# 5. Month				yes			1-2 or JAN-DEC			, - * /
+# 6. Day of week		yes			1-7 or SUN-SAT			, - * ? / L #
+# 7. Year 				no			empty, 1970-2099		, - * /
+#
+# Legend : ? : no specific value
+#		 : L : last
+#		 : W : weekday
+
+#******** Document cleaner
+job.document.cleaner.activation=false
+job.document.cleaner.cron.expression=0 0 0 1 1 ?
+
+
+#******** Domain
+# If true, we can search an user during authentication process using his uid or his mail (as a login).
+# By default, false, only the mail is used.
+# Be careful if you have multiples directories, login must be unique !!!
+linshare.multidomain.enable=false
+
+
+#****************** Async task management
+# ThreadPoolTaskExecutor for AsyncTask like uploads.
+#linshare.ThreadPoolTaskExecutor.corePoolSize=10
+#linshare.ThreadPoolTaskExecutor.maxPoolSize=30
+
+# enable file size validation on rest API (thread entries, documents and flow).
+linshare.rest.files.size.validation=true

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+	default-autowire="no">
+
+	<bean name="deleteGuestBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteGuestBatchImpl">
+		<constructor-arg ref="guestService" />
+		<constructor-arg ref="accountRepository" />
+	</bean>
+
+	<bean name="markUserToPurgeBatch"
+		class="com.t3c.anchel.core.batches.impl.MarkUserToPurgeBatchImpl">
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg value="${job.users.delay.before.purge}" />
+	</bean>
+
+	<bean name="purgeUserBatch"
+		class="com.t3c.anchel.core.batches.impl.PurgeUserBatchImpl">
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="accountRepository" />
+	</bean>
+
+	<bean name="undownloadedSharedDocumentsBatch"
+		class="com.t3c.anchel.core.batches.impl.UndownloadedSharedDocumentsBatchImpl">
+		<constructor-arg ref="shareEntryGroupService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="logEntryService" />
+		<constructor-arg ref="accountRepository" />
+	</bean>
+
+	<bean name="deleteShareEntryGroupBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteShareEntryGroupBatchImpl">
+		<constructor-arg ref="shareEntryGroupService" />
+		<constructor-arg ref="accountRepository" />
+	</bean>
+
+	<bean name="deleteExpiredShareEntryBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteExpiredShareEntryBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="shareEntryService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="documentEntryService" />
+	</bean>
+
+	<bean name="deleteExpiredAnonymousShareEntryBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteExpiredAnonymousShareEntryBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="anonymousShareEntryService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg ref="documentEntryService" />
+	</bean>
+
+	<bean name="deleteExpiredAnonymousUrlBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteExpiredAnonymousUrlBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="anonymousUrlService" />
+	</bean>
+
+	<bean name="deleteExpiredDocumentEntryBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteExpiredDocumentEntryBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="functionalityReadOnlyService" />
+		<constructor-arg value="${job.document.cleaner.activation}" />
+	</bean>
+
+	<bean name="deleteMissingDocumentsBatch"
+		class="com.t3c.anchel.core.batches.impl.DeleteMissingDocumentsBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="documentRepository" />
+		<constructor-arg ref="documentEntryBusinessService" />
+		<constructor-arg ref="documentEntryService" />
+		<constructor-arg ref="workGroupDocumentService" />
+		<constructor-arg ref="shareService" />
+		<constructor-arg ref="fileDataStore" />
+	</bean>
+
+	<bean name="computeDocumentMimeTypeBatch"
+		class="com.t3c.anchel.core.batches.impl.ComputeDocumentMimeTypeBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="documentRepository" />
+		<constructor-arg ref="fileDataStore" />
+		<constructor-arg ref="mimeTypeMagicNumberDao" />
+	</bean>
+
+	<bean name="enableUploadRequestBatch"
+		class="com.t3c.anchel.core.batches.impl.EnableUploadRequestBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="uploadRequestService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+	</bean>
+
+	<bean name="closeExpiredUploadRequestBatch"
+		class="com.t3c.anchel.core.batches.impl.CloseExpiredUploadRequestBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="uploadRequestService" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+	</bean>
+
+	<bean name="notifyBeforeExpirationUploadRequestBatch"
+		class="com.t3c.anchel.core.batches.impl.NotifyBeforeExpirationUploadRequestBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="mailBuildingService" />
+		<constructor-arg ref="notifierService" />
+		<constructor-arg ref="uploadRequestService" />
+	</bean>
+
+	<bean name="inconsistentUserBatch"
+		class="com.t3c.anchel.core.batches.impl.InconsistentUserBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="inconsistentUserService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+
+	<bean name="checkIfUserStillInconsistentBatch"
+		class="com.t3c.anchel.core.batches.impl.CheckIfUserStillInconsistentBatchImpl">
+		<constructor-arg ref="accountRepository" />
+		<constructor-arg ref="inconsistentUserService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean name="batchRunner"
+		class="com.t3c.anchel.core.runner.impl.BatchRunnerImpl">
+	</bean>
+
+</beans>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="com.t3c.anchel.core.domain.entities">
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="roleEnumType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.Role</param>
+		<param name="identifierMethod">toInt</param>
+		<param name="valueOfMethod">fromInt</param>
+	</typedef>
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="supportedLanguageType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.SupportedLanguage</param>
+		<param name="identifierMethod">getTapestryLocale</param>
+		<param name="valueOfMethod">fromTapestryLocale</param>
+	</typedef>
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="languageType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.Language</param>
+		<param name="identifierMethod">getTapestryLocale</param>
+		<param name="valueOfMethod">fromTapestryLocale</param>
+	</typedef>
+	<class name="AbstractDomain" table="domain_abstract" discriminator-value= "-1" >
+		<id name="persistenceId" type="long">
+			<column name="id" not-null="true" index="index_abstract_domain_id"/>
+			<generator class="native" />
+		</id>
+
+		<discriminator column="type" type="integer" />
+
+		<property access="field" column="uuid" name="uuid" not-null="true" unique="true" index="index_abstract_domain_uuid" />
+		<property access="field" column="label" name="label" not-null="true" />
+		<property access="field" column="enable" name="enable" not-null="true" />
+		<property access="field" column="template" name="template" not-null="true" />
+		<property access="field" column="description" name="description" type="text" not-null="true" lazy="false"/>
+		<property access="field" column="default_role" name="defaultRole" type="roleEnumType" />
+		<property access="field" column="default_locale" name="defaultTapestryLocale" type="supportedLanguageType"/>
+		<property access="field" column="default_mail_locale" name="externalMailLocale" type="languageType"/>
+		<property access="field" column="auth_show_order" name="authShowOrder" />
+
+		<many-to-one name="policy" class="com.t3c.anchel.core.domain.entities.DomainPolicy" 
+			column="domain_policy_id" not-null="true" lazy="proxy" />
+
+		<many-to-one name="parentDomain" column="parent_id" class="AbstractDomain" lazy="proxy"/>
+
+		<set name="subdomain" lazy="true" cascade="all-delete-orphan">
+			<key column="parent_id" />
+			<one-to-many class="AbstractDomain" />
+		</set>
+
+		<set name="functionalities" inverse="true" cascade="all-delete-orphan" lazy="true">
+			<key column="domain_id" />
+			<one-to-many class="Functionality"  />
+		</set>
+
+		<set name="domainAccessRules" inverse="true" cascade="delete-orphan" lazy="true">
+			<key column="domain_id" />
+			<one-to-many class="DomainAccessRule"  />
+		</set>
+
+
+		<many-to-one name="currentMailConfiguration" cascade="lock" column="mailconfig_id"
+		class="com.t3c.anchel.core.domain.entities.MailConfig" not-null="false" lazy="proxy">
+		</many-to-one>
+
+		<set name="mailLayouts" lazy="true" cascade="save-update,lock" inverse="false">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.MailLayout"/>
+		</set>
+		<set name="mailFooters" lazy="true" cascade="save-update,lock" inverse="false">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.MailFooter"/>
+		</set>
+		<set name="mailContents" lazy="true" cascade="save-update,lock" inverse="false">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.MailContent"/>
+		</set>
+		<set name="mailConfigs" lazy="true" cascade="save-update,lock" inverse="true">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.MailConfig"/>
+		</set>
+
+		<many-to-one name="mimePolicy" cascade="lock" column="mime_policy_id" class="MimePolicy" not-null="false" lazy="proxy"/>
+
+		<set name="mimePolicies" lazy="true" cascade="save-update,lock" inverse="false">
+			<key column="domain_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.MimePolicy"/>
+		</set>
+
+		<set name="uploadPropositionFilters" lazy="true" cascade="lock" inverse="true">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.UploadPropositionFilter"/>
+		</set>
+
+		<set name="uploadPropositions" lazy="true" cascade="lock" inverse="true">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.UploadProposition"/>
+		</set>
+
+		<many-to-one name="userProvider" column="user_provider_id" class="com.t3c.anchel.core.domain.entities.UserProvider"
+			unique="true" not-null="false" lazy="proxy">
+		</many-to-one>
+		<!-- 
+		<many-to-one name="userProvider" class="com.t3c.anchel.core.domain.entities.LdapUserProvider" 
+			column="user_provider_id" unique="true" lazy="proxy" cascade="delete" />
+			 -->
+
+		<set name="contactProvider" lazy="true" inverse="false">
+			<key column="domain_abstract_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.ContactProvider"/>
+		</set>
+
+		<many-to-one name="currentWelcomeMessage" cascade="lock" column="welcome_messages_id"
+			class="com.t3c.anchel.core.domain.entities.WelcomeMessages" not-null="false" lazy="proxy">
+		</many-to-one>
+
+		<set name="welcomeMessages" lazy="true" inverse="true">
+			<key column="domain_id" not-null="true"/>
+			<one-to-many class="com.t3c.anchel.core.domain.entities.WelcomeMessages"/>
+		</set>
+
+		<list name="shareExpiryRules" table="share_expiry_rules" lazy="true">
+			<key>
+				<column name="domain_id" not-null="true" index="index_share_expiry_rule_id" />
+			</key>
+			<list-index column="rule_sort_order" />
+			<composite-element class="ShareExpiryRule">
+				<property column="expiry_time" name="shareExpiryTime" />
+				<property column="time_unit_id" name="shareExpiryUnit" type="timeUnitEnumType" />
+				<property column="share_size" name="shareSize" />
+				<property column="size_unit_id" name="shareSizeUnit" type="fileSizeEnumType" />
+			</composite-element>
+		</list>
+
+		<subclass discriminator-value="0" name="com.t3c.anchel.core.domain.entities.RootDomain"></subclass>
+		<subclass discriminator-value="1" name="com.t3c.anchel.core.domain.entities.TopDomain"></subclass>
+		<subclass discriminator-value="2" name="com.t3c.anchel.core.domain.entities.SubDomain"></subclass>
+		<subclass discriminator-value="3" name="com.t3c.anchel.core.domain.entities.GuestDomain"></subclass>
+
+	</class>
+</hibernate-mapping>
+
+

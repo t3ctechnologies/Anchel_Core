@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field" package="com.t3c.anchel.core.domain.entities">
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="enumLanguage">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.Language</param>
+		<param name="identifierMethod">getTapestryLocale</param>
+		<param name="valueOfMethod">fromTapestryLocale</param>
+	</typedef>
+  <class name="Functionality" table="functionality" >
+    <cache usage="read-write" />
+    <id name="id" type="long">
+      <column name="id" not-null="true" index="index_functionality_id"/>
+      <generator class="native"/>
+    </id>
+    <property access="field" column="system" name="system" not-null="true"/>
+    <property access="field" column="identifier" name="identifier" not-null="true"  unique-key="functionality_unicity_key"/>
+	<property name="param" type="boolean" not-null="true" lazy="false">
+		<column name="param" default="false"/>
+	</property>
+    <property column="parent_identifier" name="parentIdentifier"/>
+    <many-to-one name="activationPolicy" class="Policy" column="policy_activation_id" unique="true" cascade="all" lazy="false" fetch="join" />
+    <many-to-one name="configurationPolicy" class="Policy" column="policy_configuration_id" unique="true" cascade="all" lazy="false" fetch="join" />
+    <many-to-one name="delegationPolicy" class="Policy" column="policy_delegation_id" unique="true" cascade="all" lazy="false" fetch="join" />
+
+	<many-to-one name="domain" column="domain_id" not-null="true" lazy="no-proxy"  unique-key="functionality_unicity_key" />
+
+	<joined-subclass name="StringValueFunctionality" table="functionality_string">
+		<key>
+     		<column name="functionality_id" not-null="true" index="index_functionality_string_id"/>
+    	</key>
+        <property name="value" column="string_value" type="string"/>
+    </joined-subclass>
+    
+    <joined-subclass name="IntegerValueFunctionality" table="functionality_integer">
+    	<key>
+     		<column name="functionality_id" not-null="true" index="index_functionality_integer_id"/>
+    	</key>
+        <property name="value" column="integer_value" type="integer"/>
+    </joined-subclass>
+    
+    <joined-subclass name="BooleanValueFunctionality" table="functionality_boolean">
+    	<key>
+     		<column name="functionality_id" not-null="true" index="index_functionality_boolean_id"/>
+    	</key>
+        <property name="value" column="boolean_value" type="boolean"/>
+    </joined-subclass>
+    
+    <joined-subclass name="UnitValueFunctionality" table="functionality_unit">
+    	<key>
+     		<column name="functionality_id" not-null="true" index="index_functionality_unit_id"/>
+    	</key>
+        <property name="value" column="integer_value" type="integer"/>
+        <many-to-one name="unit" class="com.t3c.anchel.core.domain.entities.Unit" column="unit_id" unique="true" cascade="all" lazy="false" />
+    </joined-subclass>
+
+    <joined-subclass name="LanguageEnumValueFunctionality" table="functionality_enum_lang">
+		<key>
+			<column name="functionality_id" not-null="true" index="index_functionality_enum_id"/>
+		</key>
+        <property name="value" column="lang_value" type="enumLanguage"/>
+    </joined-subclass>
+  </class>
+ </hibernate-mapping>

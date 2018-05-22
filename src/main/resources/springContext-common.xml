@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-autowire="no">
+    <bean id="propertyPlaceholder" class="com.t3c.anchel.core.utils.PropertyPlaceholderConfigurer">
+    	<property name="ignoreResourceNotFound" value="true"/>
+    	<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+    	
+    	 <property name="properties">
+		    <props>
+		      <prop key="virusscanner.clamav.host" />
+		      <prop key="virusscanner.clamav.port">3310</prop>
+		      <!--  Override this property if you want to set properties outside the webapp -->
+		      <prop key="linshare.config.path"/>
+		    </props>
+		  </property>
+        <property name="locations">
+            <list>
+                <value>classpath:version.properties</value>
+                <value>classpath:linshare-default.properties</value>
+                <value>classpath:linshare.properties</value>
+                <value>classpath:jackRabbit.properties</value>
+                <value>${linshare.config.path}/linshare.properties</value>
+                <value>${linshare.config.path}/jackRabbit.properties</value>
+            </list>
+        </property>
+    </bean>
+</beans>

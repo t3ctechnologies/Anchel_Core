@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="userProviderType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.UserProviderType</param>
+		<param name="identifierMethod">name</param>
+		<param name="valueOfMethod">fromString</param>
+	</typedef>
+	<class name="com.t3c.anchel.core.domain.entities.UserProvider" table="user_provider" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<discriminator column="provider_type" type="string"/>
+		<property name="userProviderType" column="provider_type" unique="true" type="userProviderType" not-null="true" lazy="false" insert="false" update="false"/>
+		<property name="uuid" column="uuid" unique="true" type="string" length="255" not-null="true" lazy="false"/>
+		<property name="creationDate" column="creation_date" type="timestamp" not-null="true" lazy="false"/>
+		<property name="modificationDate" column="modification_date" type="timestamp" not-null="true" lazy="false"/>
+		<subclass name="com.t3c.anchel.core.domain.entities.LdapUserProvider" discriminator-value="LDAP_PROVIDER" lazy="true">
+			<property name="baseDn" column="base_dn" type="string" length="255" not-null="false" lazy="true" />
+			<many-to-one name="ldapConnection" column="ldap_connection_id" class="com.t3c.anchel.core.domain.entities.LdapConnection" not-null="true" lazy="proxy" >
+			</many-to-one>
+			<many-to-one name="pattern" column="ldap_pattern_id" class="com.t3c.anchel.core.domain.entities.UserLdapPattern" not-null="true" lazy="proxy"  >
+			</many-to-one>
+		</subclass>
+	</class>
+</hibernate-mapping>

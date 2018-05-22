@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation=" http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/transports/http/configuration
+	http://cxf.apache.org/schemas/configuration/http-conf.xsd
+	http://cxf.apache.org/jaxws
+	http://cxf.apache.org/schemas/jaxws.xsd
+	http://cxf.apache.org/jaxrs
+	http://cxf.apache.org/schemas/jaxrs.xsd">
+	<description>User v2 api exposed on /webservice/rest/user/v2 endpoint.</description>
+
+	<!-- cxf -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<!-- REST  -->
+
+	<bean id="userv2DocumentRestService" class="com.t3c.anchel.webservice.userv2.impl.DocumentRestServiceImpl">
+		<constructor-arg ref="wsDocumentFacade" />
+		<constructor-arg ref="wsDocumentAsyncFacade" />
+		<constructor-arg ref="wsAsyncTaskFacade" />
+		<constructor-arg ref="taskExecutor" />
+		<constructor-arg ref="wsAccountQuotaFacade" />
+		<constructor-arg value="${linshare.rest.files.size.validation}" />
+	</bean>
+
+	<bean id="userv2ReceivedShareRestService" class="com.t3c.anchel.webservice.userv2.impl.ReceivedShareRestServiceImpl">
+		<constructor-arg ref="wsShareFacade" />
+	</bean>
+
+	<bean id="userv2WorkGroupMemberRestService" class="com.t3c.anchel.webservice.userv2.impl.WorkGroupMemberRestServiceImpl">
+		<constructor-arg ref="wsThreadMemberFacade" />
+	</bean>
+
+	<bean id="userv2WorkGroupRestService" class="com.t3c.anchel.webservice.userv2.impl.WorkGroupRestServiceImpl">
+		<constructor-arg ref="wsThreadFacade" />
+	</bean>
+
+	<bean id="userv2WorkGroupNodeRestService" class="com.t3c.anchel.webservice.userv2.impl.WorkGroupNodeRestServiceImpl">
+		<constructor-arg ref="wsWorkGroupNodeFacade" />
+		<constructor-arg ref="wsThreadEntryAsyncFacade" />
+		<constructor-arg ref="wsAsyncTaskFacade" />
+		<constructor-arg ref="taskExecutor" />
+		<constructor-arg ref="wsAccountQuotaFacade" />
+		<constructor-arg value="${linshare.rest.files.size.validation}" />
+	</bean>
+
+	<bean id="userUserPreferenceRestService" class="com.t3c.anchel.webservice.userv2.impl.UserPreferenceRestServiceImpl">
+		<constructor-arg ref="wsUserPreferenceFacade"/>
+	</bean>
+
+	<bean id="userAuditLogEntryUserRestService" class="com.t3c.anchel.webservice.userv2.impl.AuditLogEntryUserRestServiceImpl">
+		<constructor-arg ref="wsAuditLogEntryUserFacade"/>
+	</bean>
+
+	<bean id="userv2ContactListRestService" class="com.t3c.anchel.webservice.userv2.impl.ContactListRestServiceImpl">
+		<constructor-arg ref="wsContactListFacade" />
+	</bean>
+
+	<bean id="userv2GuestRestService" class="com.t3c.anchel.webservice.userv2.impl.GuestRestServiceImpl">
+		<constructor-arg ref="wsGuestFacade" />
+	</bean>
+
+	<bean id="userv2StatisticRestService" class="com.t3c.anchel.webservice.userv2.impl.StatisticRestServiceImpl">
+		<constructor-arg ref="wsStatisticFacade" />
+	</bean>
+
+	<bean id="userv2AccountQuotaRestService" class="com.t3c.anchel.webservice.userv2.impl.QuotaRestServiceImpl">
+		<constructor-arg ref="wsAccountQuotaFacade" />
+	</bean>
+
+	<bean id="userv2FlowDocumentUploaderRestService" class="com.t3c.anchel.webservice.userv2.impl.FlowDocumentUploaderRestServiceImpl">
+		<constructor-arg ref="wsDocumentFacade" />
+		<constructor-arg ref="wsWorkGroupNodeFacade" />
+		<constructor-arg ref="wsAccountQuotaFacade" />
+		<constructor-arg ref="wsDocumentAsyncFacade" />
+		<constructor-arg ref="wsThreadEntryAsyncFacade" />
+		<constructor-arg ref="wsAsyncTaskFacade" />
+		<constructor-arg ref="taskExecutor" />
+		<constructor-arg value="${linshare.rest.files.size.validation}" />
+	</bean>
+
+	<bean id="userv2WelcomeMessagesRestService" class="com.t3c.anchel.webservice.userv2.impl.WelcomeMessagesRestServiceImpl">
+		<constructor-arg ref="wsWelcomeMessagesFacadeImpl" />
+	</bean>
+
+	<jaxrs:server id="userRestContainer" address="/rest/user/v2">
+		<jaxrs:serviceBeans>
+			<ref bean="userEnumRestService" />
+			<ref bean="userAuthenticationRestService" />
+			<ref bean="userv2DocumentRestService" />
+			<ref bean="userv2WorkGroupRestService" />
+			<ref bean="userv2WorkGroupMemberRestService" />
+			<ref bean="userv2WorkGroupNodeRestService" />
+			<ref bean="userv2GuestRestService" />
+			<ref bean="userShareRestService" />
+			<ref bean="userRestService" />
+			<ref bean="userv2ReceivedShareRestService" />
+			<ref bean="userLogRestService" />
+			<ref bean="userFunctionalityRestService" />
+			<ref bean="userv2FlowDocumentUploaderRestService" />
+			<ref bean="userShareEntryGroupRestService" />
+			<ref bean="userv2ContactListRestService" />
+			<ref bean="userMimeTypeRestService" />
+			<ref bean="userAutoCompleteRestService" />
+<!-- 			<ref bean="userUploadRequestRestService" /> -->
+<!-- 			<ref bean="userUploadRequestGroupRestService" /> -->
+<!-- 			<ref bean="userUploadRequestTemplateRestService" /> -->
+			<ref bean="userUserPreferenceRestService" />
+			<ref bean="userAuditLogEntryUserRestService" />
+<!-- 			Disable because it is fully tested. -->
+<!-- 			<ref bean="userv2StatisticRestService" /> -->
+			<ref bean="userv2AccountQuotaRestService" />
+			<ref bean="userv2WelcomeMessagesRestService" />
+<!--
+			<ref bean="pluginCompatibilityRestServiceV2" />
+-->
+		</jaxrs:serviceBeans>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<jaxrs:providers>
+			<!--  ExceptionMappers. -->
+			<ref bean="businessExceptionMapper" />
+			<ref bean="genericExceptionMapper" />
+			<ref bean="webApplicationExceptionMapper" />
+			<ref bean="illegalArgumentExceptionMapper" />
+			<ref bean="jaxrsNoCacheFilter" />
+			<ref bean="jsonParseExceptionMapper" />
+			<ref bean="unrecognizedPropertyExceptionMapper" />
+			<!-- Json provider for serialisation -->
+			<ref bean="jsonProvider" />
+		</jaxrs:providers>
+		<jaxrs:features>
+<!-- 			<cxf:logging /> -->
+		</jaxrs:features>
+		<jaxrs:inInterceptors>
+			<!-- For debug only : print input message -->
+<!-- 			<ref bean="logInbound" /> -->
+			<!-- This interceptor is designed to store some context properties in message exchange context for timingOutInterceptor -->
+			<ref bean="timingInInterceptor" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<!-- For debug only : print output  message -->
+<!--             	<ref bean="logOutbound" /> -->
+			<!-- This interceptor is designed compute request execution time.-->
+			<ref bean="timingOutInterceptor" />
+		</jaxrs:outInterceptors>
+		<jaxrs:inFaultInterceptors>
+		</jaxrs:inFaultInterceptors>
+		<jaxrs:outFaultInterceptors>
+		</jaxrs:outFaultInterceptors>
+	</jaxrs:server>
+</beans>

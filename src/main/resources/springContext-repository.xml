@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean name="accountRepository" class="com.t3c.anchel.core.repository.hibernate.AccountRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	
+	<bean name="threadRepository" class="com.t3c.anchel.core.repository.hibernate.ThreadRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="threadMemberRepository" class="com.t3c.anchel.core.repository.hibernate.ThreadMemberRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="userRepository" class="com.t3c.anchel.core.repository.hibernate.UserRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="guestRepository" class="com.t3c.anchel.core.repository.hibernate.GuestRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="internalRepository" class="com.t3c.anchel.core.repository.hibernate.InternalRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+		<constructor-arg value="${linshare.multidomain.enable}" />
+	</bean>
+
+	<bean name="rootUserRepository" class="com.t3c.anchel.core.repository.hibernate.RootUserRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="documentRepository" class="com.t3c.anchel.core.repository.hibernate.DocumentRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="signatureRepository" class="com.t3c.anchel.core.repository.hibernate.SignatureRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="documentEntryRepository" class="com.t3c.anchel.core.repository.hibernate.DocumentEntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="threadEntryRepository" class="com.t3c.anchel.core.repository.hibernate.ThreadEntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="logEntryRepository" class="com.t3c.anchel.core.repository.hibernate.LogEntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="shareEntryRepository" class="com.t3c.anchel.core.repository.hibernate.ShareEntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="shareEntryGroupRepository" class="com.t3c.anchel.core.repository.hibernate.ShareEntryGroupRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="anonymousShareEntryRepository" class="com.t3c.anchel.core.repository.hibernate.AnonymousShareEntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="anonymousUrlRepository" class="com.t3c.anchel.core.repository.hibernate.AnonymousUrlRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="recipientFavouriteRepository" class="com.t3c.anchel.core.repository.hibernate.RecipientFavouriteRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="cookieRepository" class="com.t3c.anchel.core.repository.hibernate.CookieRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="allowedContactRepository" class="com.t3c.anchel.core.repository.hibernate.AllowedContactRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="domainPatternRepository" class="com.t3c.anchel.core.repository.hibernate.DomainPatternRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="ldapConnectionRepository" class="com.t3c.anchel.core.repository.hibernate.LdapConnectionRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="policyRepository" class="com.t3c.anchel.core.repository.hibernate.PolicyRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="unitRepository" class="com.t3c.anchel.core.repository.hibernate.UnitRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="abstractDomainRepository" class="com.t3c.anchel.core.repository.hibernate.AbstractDomainRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="functionalityRepository" class="com.t3c.anchel.core.repository.hibernate.FunctionalityRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="userProviderRepository" class="com.t3c.anchel.core.repository.hibernate.UserProviderRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="domainAccessRuleRepository" class="com.t3c.anchel.core.repository.hibernate.DomainAccessRuleRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="domainAccessPolicyRepository" class="com.t3c.anchel.core.repository.hibernate.DomainAccessPolicyRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="domainPolicyRepository" class="com.t3c.anchel.core.repository.hibernate.DomainPolicyRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+	<bean name="contactRepository" class="com.t3c.anchel.core.repository.hibernate.ContactRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailingListRepository" class="com.t3c.anchel.core.repository.hibernate.MailingListRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailingListContactRepository" class="com.t3c.anchel.core.repository.hibernate.MailingListContactRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailConfigRepository" class="com.t3c.anchel.core.repository.hibernate.MailConfigRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailContentLangRepository" class="com.t3c.anchel.core.repository.hibernate.MailContentLangRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailContentRepository" class="com.t3c.anchel.core.repository.hibernate.MailContentRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailFooterLangRepository" class="com.t3c.anchel.core.repository.hibernate.MailFooterLangRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailFooterRepository" class="com.t3c.anchel.core.repository.hibernate.MailFooterRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailLayoutRepository" class="com.t3c.anchel.core.repository.hibernate.MailLayoutRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mimePolicyRepository" class="com.t3c.anchel.core.repository.hibernate.MimePolicyRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mimeTypeRepository" class="com.t3c.anchel.core.repository.hibernate.MimeTypeRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadRequestEntryRepository" class="com.t3c.anchel.core.repository.hibernate.UploadRequestEntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadRequestHistoryRepository" class="com.t3c.anchel.core.repository.hibernate.UploadRequestHistoryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadRequestRepository" class="com.t3c.anchel.core.repository.hibernate.UploadRequestRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadRequestGroupRepository" class="com.t3c.anchel.core.repository.hibernate.UploadRequestGroupRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadRequestTemplateRepository" class="com.t3c.anchel.core.repository.hibernate.UploadRequestTemplateRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadRequestUrlRepository" class="com.t3c.anchel.core.repository.hibernate.UploadRequestUrlRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="technicalAccountRepository" class="com.t3c.anchel.core.repository.hibernate.TechnicalAccountRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="technicalAccountPermissionRepository" class="com.t3c.anchel.core.repository.hibernate.TechnicalAccountPermissionRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadPropositionRepository" class="com.t3c.anchel.core.repository.hibernate.UploadPropositionRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadPropositionFilterRepository" class="com.t3c.anchel.core.repository.hibernate.UploadPropositionFilterRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadPropositionActionRepository" class="com.t3c.anchel.core.repository.hibernate.UploadPropositionActionRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="uploadPropositionRuleRepository" class="com.t3c.anchel.core.repository.hibernate.UploadPropositionRuleRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="entryRepository" class="com.t3c.anchel.core.repository.hibernate.EntryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="welcomeMessagesRepository" class="com.t3c.anchel.core.repository.hibernate.WelcomeMessagesRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="ldapUserProviderRepository" class="com.t3c.anchel.core.repository.hibernate.LdapUserProviderRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="mailActivationRepository" class="com.t3c.anchel.core.repository.hibernate.MailActivationRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="asyncTaskRepository" class="com.t3c.anchel.core.repository.hibernate.AsyncTaskRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="statisticRepository" class="com.t3c.anchel.core.repository.hibernate.StatisticRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="operationHistoryRepository" class="com.t3c.anchel.core.repository.hibernate.OperationHistoryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="userDailyStatRepository" class="com.t3c.anchel.core.repository.hibernate.UserDailyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="userWeeklyStatRepository" class="com.t3c.anchel.core.repository.hibernate.UserWeeklyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="userMonthlyStatRepository" class="com.t3c.anchel.core.repository.hibernate.UserMonthlyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="threadDailyStatRepository" class="com.t3c.anchel.core.repository.hibernate.ThreadDailyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="threadWeeklyStatRepository" class="com.t3c.anchel.core.repository.hibernate.ThreadWeeklyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="threadMonthlyStatRepository" class="com.t3c.anchel.core.repository.hibernate.ThreadMonthlyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="domainDailyStatRepository" class="com.t3c.anchel.core.repository.hibernate.DomainDailyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="domainWeeklyStatRepository" class="com.t3c.anchel.core.repository.hibernate.DomainWeeklyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="domainMonthlyStatRepository" class="com.t3c.anchel.core.repository.hibernate.DomainMonthlyStatRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="domainQuotaRepository" class="com.t3c.anchel.core.repository.hibernate.DomainQuotaRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="accountQuotaRepository" class="com.t3c.anchel.core.repository.hibernate.AccountQuotaRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="containerQuotaRepository" class="com.t3c.anchel.core.repository.hibernate.ContainerQuotaRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="batchHistoryRepository" class="com.t3c.anchel.core.repository.hibernate.BatchHistoryRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+	<bean name="upgradeTaskRepository" class="com.t3c.anchel.core.repository.hibernate.UpgradeTaskRepositoryImpl">
+		<constructor-arg ref="hibernateTemplate" />
+	</bean>
+
+</beans>

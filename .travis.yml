@@ -1,0 +1,15 @@
+sudo: required
+language: java
+install: true
+script: mvn clean package -DskipTests=true -Ph2,local
+services:
+  - docker
+deploy:
+  provider: script
+  script: bash docker_push.sh
+  skip_cleanup: true
+  on:
+    branch: master
+addons:
+  artifacts: true
+    

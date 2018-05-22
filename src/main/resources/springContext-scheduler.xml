@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="cleanOutdatedUsersJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.t3c.anchel.core.job.quartz.LinShareJobBean" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="batch">
+					<list value-type="com.t3c.anchel.core.job.quartz.LinShareJobBean">
+						<ref bean="deleteGuestBatch" />
+						<ref bean="markUserToPurgeBatch" />
+						<ref bean="purgeUserBatch" />
+					</list>
+				</entry>
+				<entry key="batchRunner" value-ref="batchRunner" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="cleanOutdatedUsersJobTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cleanOutdatedUsersJob" />
+		<property name="cronExpression" value="${job.users.cron.expression}" />
+	</bean>
+
+	<bean id="computeDocumentMimeTypeBatchJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.t3c.anchel.core.job.quartz.LinShareJobBean" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="batch">
+					<list value-type="com.t3c.anchel.core.job.quartz.LinShareJobBean">
+						<ref bean="computeDocumentMimeTypeBatch" />
+					</list>
+				</entry>
+				<entry key="batchRunner" value-ref="batchRunner" />
+			</map>
+		</property>
+	</bean>
+	<bean id="computeDocumentMimeTypeBatchJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="computeDocumentMimeTypeBatchJob" />
+		<property name="cronExpression" value="${job.mimetype.cron.expression}" />
+	</bean>
+
+
+    <bean id="notifyOutdatedSharesJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.t3c.anchel.core.job.quartz.NotifyOutdatedShares"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="batch" value-ref="shareManagementBatch"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="notifyOutdatedSharesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="notifyOutdatedSharesJob"/>
+        <property name="cronExpression" value="${job.outdatedshares.cron.expression}"/>
+    </bean>
+
+	<bean id="deleteMissingDocumentsBatchJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.t3c.anchel.core.job.quartz.LinShareJobBean" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="batch">
+					<list value-type="com.t3c.anchel.core.job.quartz.LinShareJobBean">
+<!-- 						<ref bean="deleteMissingDocumentsBatch" /> -->
+						<ref bean="inconsistentUserBatch" />
+					</list>
+				</entry>
+				<entry key="batchRunner" value-ref="batchRunner" />
+			</map>
+		</property>
+	</bean>
+	<bean id="deleteMissingDocumentsBatchJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="deleteMissingDocumentsBatchJob" />
+		<property name="cronExpression" value="${job.consistency.cron.expression}" />
+	</bean>
+
+    <bean id="updateUploadRequestJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.t3c.anchel.core.job.quartz.LinShareJobBean"/>
+        <property name="jobDataAsMap">
+            <map>
+            <entry key="batch">
+					<list value-type="com.t3c.anchel.core.job.quartz.LinShareJobBean">
+						<ref bean="enableUploadRequestBatch" />
+						<ref bean="closeExpiredUploadRequestBatch" />
+						<ref bean="notifyBeforeExpirationUploadRequestBatch" />
+					</list>
+				</entry>
+				<entry key="batchRunner" value-ref="batchRunner" />
+            </map>
+        </property>
+    </bean>
+    <bean id="updateUploadRequestJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="updateUploadRequestJob"/>
+        <property name="cronExpression" value="${job.uploadrequest.cron.expression}"/>
+    </bean>
+
+	<bean id="notifyUndownloadedSharedDocumentsJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.t3c.anchel.core.job.quartz.LinShareJobBean" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="batch" value-ref="undownloadedSharedDocumentsBatch" />
+				<entry key="batchRunner" value-ref="batchRunner" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="nofifyUndownloadedSharedDocumentsJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="notifyUndownloadedSharedDocumentsJob" />
+		<property name="cronExpression"
+			value="${job.shares.undownloaded.notification.cron.expression}" />
+	</bean>
+
+	<bean id="cleaningShareEntriesJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.t3c.anchel.core.job.quartz.LinShareJobBean" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="batch">
+					<list value-type="com.t3c.anchel.core.job.quartz.LinShareJobBean">
+						<ref bean="deleteExpiredShareEntryBatch" />
+						<ref bean="deleteExpiredAnonymousShareEntryBatch" />
+						<ref bean="deleteExpiredAnonymousUrlBatch" />
+						<ref bean="deleteShareEntryGroupBatch" />
+						<ref bean="deleteExpiredDocumentEntryBatch" />
+<!-- 						<ref bean="deleteMissingDocumentsBatch" /> -->
+					</list>
+				</entry>
+				<entry key="batchRunner" value-ref="batchRunner" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="cleaningShareEntriesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cleaningShareEntriesJob" />
+		<property name="cronExpression"
+			value="${job.shares.cron.expression}" />
+	</bean>
+
+	<bean id="dailyBatchJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.t3c.anchel.core.job.quartz.LinShareJobBean" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="batch">
+					<list value-type="com.t3c.anchel.core.batches.GenericBatch">
+						<ref bean="statisticDailyUserBatch" />
+						<ref bean="statisticDailyThreadBatch" />
+						<ref bean="statisticDailyDomainBatch" />
+						<ref bean="computeSubDomainQuotaBatch" />
+						<ref bean="statisticWeeklyUserBatch" />
+						<ref bean="statisticWeeklyThreadBatch" />
+						<ref bean="statisticWeeklyDomainBatch" />
+						<ref bean="statisticMonthlyUserBatch" />
+						<ref bean="statisticMonthlyThreadBatch" />
+						<ref bean="statisticMonthlyDomainBatch" />
+					</list>
+				</entry>
+				<entry key="batchRunner" value-ref="batchRunner" />
+			</map>
+		</property>
+	</bean>
+
+    <bean id="dailyBatchJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="dailyBatchJob"/>
+        <property name="cronExpression" value="${job.updateDailyStatQuota.cron.expression}"/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cleanOutdatedUsersJobTrigger"/>
+                <ref bean="notifyOutdatedSharesJobTrigger"/>
+                <ref bean="updateUploadRequestJobTrigger"/>
+                <ref bean="nofifyUndownloadedSharedDocumentsJobTrigger"/>
+                <ref bean="deleteMissingDocumentsBatchJobTrigger"/>
+                <ref bean="computeDocumentMimeTypeBatchJobTrigger" />
+                <ref bean="cleaningShareEntriesJobTrigger"/>
+                <ref bean="dailyBatchJobTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

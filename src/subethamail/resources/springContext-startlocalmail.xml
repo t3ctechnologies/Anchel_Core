@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	default-autowire="no">
+
+	<!-- **************************************************************** -->
+	<!--Start localhost mail (to test on localhost)-->
+	<!-- **************************************************************** -->
+	<bean id="localmail" class="com.t3c.anchel.subethamail.SmtpServerLocal" init-method="start">
+		<property name="port" value="${mail.smtp.port}"/>
+        <property name="user" value="${mail.smtp.user}"/>
+        <property name="password" value="${mail.smtp.password}"/>
+        <property name="outputDir" value="${mail.smtp.outputDir}"/>
+        
+	</bean>
+</beans>

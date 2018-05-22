@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+       http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+
+	<!-- cxf -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+
+	<!-- REST -->
+	<bean id="adminAuthenticationRestService" class="com.t3c.anchel.webservice.admin.impl.AuthenticationRestServiceImpl">
+		<constructor-arg ref="wsAdminGenericFacade" />
+		<constructor-arg ref="wsAdminUserFacade" />
+	</bean>
+
+	<bean id="adminDomainPatternRestService" class="com.t3c.anchel.webservice.admin.impl.DomainPatternRestServiceImpl">
+		<constructor-arg ref="wsAdminDomainPatternFacade" />
+	</bean>
+
+	<bean id="adminDomainPolicyRestService" class="com.t3c.anchel.webservice.admin.impl.DomainPolicyRestServiceImpl">
+		<constructor-arg ref="wsAdminDomainPolicyFacade" />
+	</bean>
+
+	<bean id="adminDomainRestService" class="com.t3c.anchel.webservice.admin.impl.DomainRestServiceImpl">
+		<constructor-arg ref="wsAdminDomainFacade" />
+	</bean>
+
+	<bean id="adminFunctionalityRestService" class="com.t3c.anchel.webservice.admin.impl.FunctionalityRestServiceImpl">
+		<constructor-arg ref="wsAdminFunctionalityFacade" />
+	</bean>
+
+	<bean id="adminLdapConnectionRestService" class="com.t3c.anchel.webservice.admin.impl.LDAPConnectionRestServiceImpl">
+		<constructor-arg ref="wsAdminLDAPConnectionFacade" />
+	</bean>
+
+	<bean id="adminLogRestService" class="com.t3c.anchel.webservice.admin.impl.LogRestServiceImpl">
+		<constructor-arg ref="wsAdminLogEntryFacade" />
+	</bean>
+
+	<bean id="adminMailingListRestService" class="com.t3c.anchel.webservice.admin.impl.MailingListRestServiceImpl">
+		<constructor-arg ref="wsAdminMailingListFacade" />
+	</bean>
+
+	<bean id="adminThreadMemberRestService" class="com.t3c.anchel.webservice.admin.impl.ThreadMemberRestServiceImpl">
+		<constructor-arg ref="wsAdminThreadMemberFacade" />
+	</bean>
+
+	<bean id="adminThreadRestService" class="com.t3c.anchel.webservice.admin.impl.ThreadRestServiceImpl">
+		<constructor-arg ref="wsAdminThreadFacade" />
+	</bean>
+
+	<bean id="adminUserRestService" class="com.t3c.anchel.webservice.admin.impl.UserRestServiceImpl">
+		<constructor-arg ref="wsAdminUserFacade" />
+		<constructor-arg ref="wsAdminAutocompleteFacade" />
+	</bean>
+
+	<bean id="adminEnumRestService" class="com.t3c.anchel.webservice.admin.impl.EnumRestServiceImpl">
+	</bean>
+
+	<bean id="adminMailConfigRestService" class="com.t3c.anchel.webservice.admin.impl.MailConfigRestServiceImpl">
+		<constructor-arg ref="wsAdminMailConfigFacade" />
+	</bean>
+
+	<bean id="adminMailContentLangRestService" class="com.t3c.anchel.webservice.admin.impl.MailContentLangRestServiceImpl">
+		<constructor-arg ref="wsAdminMailContentLangFacade" />
+	</bean>
+
+	<bean id="adminMailContentRestService" class="com.t3c.anchel.webservice.admin.impl.MailContentRestServiceImpl">
+		<constructor-arg ref="wsAdminMailContentFacade" />
+	</bean>
+
+	<bean id="adminMailFooterLangRestService" class="com.t3c.anchel.webservice.admin.impl.MailFooterLangRestServiceImpl">
+		<constructor-arg ref="wsAdminMailFooterLangFacade" />
+	</bean>
+
+	<bean id="adminMailFooterRestService" class="com.t3c.anchel.webservice.admin.impl.MailFooterRestServiceImpl">
+		<constructor-arg ref="wsAdminMailFooterFacade" />
+	</bean>
+
+	<bean id="adminMailLayoutRestService" class="com.t3c.anchel.webservice.admin.impl.MailLayoutRestServiceImpl">
+		<constructor-arg ref="wsAdminMailLayoutFacade" />
+	</bean>
+
+	<bean id="adminMimePolicyRestService" class="com.t3c.anchel.webservice.admin.impl.MimePolicyRestServiceImpl">
+		<constructor-arg ref="wsAdminMimePolicyFacade" />
+	</bean>
+
+	<bean id="adminMimeTypeRestService" class="com.t3c.anchel.webservice.admin.impl.MimeTypeRestServiceImpl">
+		<constructor-arg ref="wsAdminMimeTypeFacade" />
+	</bean>
+
+	<bean id="adminTechnicalAccountRestService" class="com.t3c.anchel.webservice.admin.impl.TechnicalAccountRestServiceImpl">
+		<constructor-arg ref="wsAdminTechnicalAccountFacade" />
+	</bean>
+
+	<bean id="adminTechnicalAccountPermissionRestService" class="com.t3c.anchel.webservice.admin.impl.TechnicalAccountPermissionRestServiceImpl">
+		<constructor-arg ref="wsAdminTechnicalAccountPermissionFacade" />
+	</bean>
+
+	<bean id="adminUploadRequestRestService" class="com.t3c.anchel.webservice.admin.impl.UploadRequestRestServiceImpl">
+		<constructor-arg ref="wsAdminUploadRequestFacade" />
+	</bean>
+
+	<bean id="adminUploadPropositionFilterRestService" class="com.t3c.anchel.webservice.admin.impl.UploadPropositionFilterRestServiceImpl">
+		<constructor-arg ref="wsAdminUploadPropositionFilterFacade" />
+	</bean>
+
+	<bean id="adminWelcomeMessagesRestService" class="com.t3c.anchel.webservice.admin.impl.WelcomeMessagesRestServiceImpl">
+		<constructor-arg ref="wsAdminWelcomeMessagesFacade" />
+	</bean>
+
+	<bean id="adminSystemConfigurationRestService" class="com.t3c.anchel.webservice.admin.impl.SystemConfigurationRestServiceImpl">
+		<constructor-arg ref="wsAdminGenericFacade" />
+	</bean>
+
+	<bean id="adminMailActivationRestService" class="com.t3c.anchel.webservice.admin.impl.MailActivationRestServiceImpl">
+		<constructor-arg ref="wsAdminMailActivationFacade" />
+	</bean>
+
+	<bean id="adminAuditLogEntryRestService" class="com.t3c.anchel.webservice.admin.impl.AuditLogEntryAdminRestServiceImpl">
+		<constructor-arg ref="wsAuditLogEntryFacade" />
+	</bean>
+
+	<bean id="adminStatisticRestService" class="com.t3c.anchel.webservice.admin.impl.StatisticRestServiceImpl">
+		<constructor-arg ref="wsAdminStatisticFacade" />
+	</bean>
+
+	<bean id="adminDomainQuotaRestService" class="com.t3c.anchel.webservice.admin.impl.DomainQuotaRestServiceImpl">
+		<constructor-arg ref="wsAdminDomainQuotaFacade" />
+	</bean>
+
+	<bean id="adminContainerQuotaRestService" class="com.t3c.anchel.webservice.admin.impl.ContainerQuotaRestServiceImpl">
+		<constructor-arg ref="wsAdminContainerQuotaFacade" />
+	</bean>
+
+	<bean id="adminAccountQuotaRestService" class="com.t3c.anchel.webservice.admin.impl.AccountQuotaRestServiceImpl">
+		<constructor-arg ref="wsAdminAccountQuotaFacade" />
+	</bean>
+
+	<jaxrs:server id="restAdminContainer" address="/rest/admin">
+		<jaxrs:serviceBeans>
+			<ref bean="adminAuthenticationRestService" />
+			<ref bean="adminLdapConnectionRestService" />
+			<ref bean="adminDomainPatternRestService" />
+			<ref bean="adminDomainPolicyRestService" />
+			<ref bean="adminDomainRestService" />
+			<ref bean="adminFunctionalityRestService" />
+			<ref bean="adminThreadRestService" />
+			<ref bean="adminMailingListRestService" />
+			<ref bean="adminThreadMemberRestService" />
+			<ref bean="adminUserRestService" />
+			<ref bean="adminLogRestService" />
+			<ref bean="adminEnumRestService" />
+			<ref bean="adminMailConfigRestService" />
+			<ref bean="adminMailLayoutRestService" />
+			<ref bean="adminMailFooterRestService" />
+			<ref bean="adminMailFooterLangRestService" />
+			<ref bean="adminMailContentRestService" />
+			<ref bean="adminMailContentLangRestService" />
+			<ref bean="adminMimePolicyRestService" />
+			<ref bean="adminMimeTypeRestService" />
+			<ref bean="adminTechnicalAccountRestService" />
+			<ref bean="adminTechnicalAccountPermissionRestService" />
+			<ref bean="adminUploadRequestRestService" />
+			<ref bean="adminUploadPropositionFilterRestService" />
+			<ref bean="adminWelcomeMessagesRestService" />
+			<ref bean="adminSystemConfigurationRestService" />
+			<ref bean="adminMailActivationRestService" />
+			<ref bean="adminAuditLogEntryRestService" />
+			<ref bean="adminStatisticRestService" />
+			<ref bean="adminDomainQuotaRestService" />
+			<ref bean="adminContainerQuotaRestService" />
+			<ref bean="adminAccountQuotaRestService" />
+			<ref bean="adminUpgradeTaskRestService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+		</jaxrs:extensionMappings>
+		<jaxrs:providers>
+			<!--  ExceptionMappers. -->
+			<ref bean="illegalArgumentExceptionMapper" />
+			<ref bean="businessExceptionMapper" />
+			<ref bean="genericExceptionMapper" />
+			<ref bean="webApplicationExceptionMapper" />
+			<ref bean="jsonParseExceptionMapper" />
+			<ref bean="unrecognizedPropertyExceptionMapper" />
+			<!-- Json provider for serialisation -->
+			<ref bean="jsonProvider" />
+		</jaxrs:providers>
+		<jaxrs:features>
+<!-- 			<cxf:logging /> -->
+		</jaxrs:features>
+		<jaxrs:inInterceptors>
+			<!-- For debug only : print input message -->
+<!-- 			<ref bean="logInbound" /> -->
+			<!-- This interceptor is designed to store some context properties in message exchange context for timingOutInterceptor -->
+			<ref bean="timingInInterceptor" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<!-- For debug only : print output  message -->
+<!--             	<ref bean="logOutbound" /> -->
+			<!-- This interceptor is designed compute request execution time.-->
+			<ref bean="timingOutInterceptor" />
+		</jaxrs:outInterceptors>
+		<jaxrs:inFaultInterceptors>
+		</jaxrs:inFaultInterceptors>
+		<jaxrs:outFaultInterceptors>
+		</jaxrs:outFaultInterceptors>
+	</jaxrs:server>
+</beans>

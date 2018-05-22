@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	default-autowire="no">
+
+	<bean id="wsAdminAutocompleteFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.AutocompleteFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userService" />
+	</bean>
+	<bean id="wsAdminLogEntryFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.LogEntryFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="logEntryService" />
+	</bean>
+	<bean id="wsAdminDomainPatternFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.DomainPatternFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userProviderService" />
+	</bean>
+	<bean id="wsAdminDomainFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.DomainFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="userProviderService" />
+		<constructor-arg ref="ldapConnectionService" />
+		<constructor-arg ref="domainPolicyService" />
+		<constructor-arg ref="userAndDomainMultiService" />
+		<constructor-arg ref="welcomeMessagesService" />
+		<constructor-arg ref="quotaService" />
+	</bean>
+	<bean id="wsAdminDomainPolicyFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.DomainPolicyFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="domainPolicyService" />
+		<constructor-arg ref="domainBusinessService" />
+	</bean>
+	<bean id="wsAdminFunctionalityFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.FunctionalityFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="functionalityService" />
+	</bean>
+	<bean id="wsAdminGenericFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.AdminGenericFacadeImpl">
+		<constructor-arg ref="accountService" />
+	</bean>
+	<bean id="wsAdminLDAPConnectionFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.LdapConnectionFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="ldapConnectionService" />
+	</bean>
+	<bean id="wsAdminThreadFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.ThreadFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="threadService" />
+	</bean>
+	<bean id="wsAdminMailingListFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailingListFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailingListService" />
+	</bean>
+	<bean id="wsAdminThreadMemberFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.ThreadMemberFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="threadService" />
+		<constructor-arg ref="userService" />
+	</bean>
+	<bean id="wsAdminUserFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.UserFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="userService" />
+		<constructor-arg ref="inconsistentUserService" />
+		<constructor-arg ref="guestService" />
+		<constructor-arg ref="quotaService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="userProviderService" />
+	</bean>
+	<bean id="wsAdminMailConfigFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailConfigFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailConfigService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminMailContentLangFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailContentLangFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailConfigService" />
+	</bean>
+	<bean id="wsAdminMailContentFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailContentFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailConfigService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="mailBuildingService" />
+	</bean>
+	<bean id="wsAdminMailFooterLangFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailFooterLangFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailConfigService" />
+	</bean>
+	<bean id="wsAdminMailFooterFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailFooterFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailConfigService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminMailLayoutFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MailLayoutFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailConfigService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminMimePolicyFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MimePolicyFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mimePolicyService" />
+	</bean>
+	<bean id="wsAdminMimeTypeFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.MimeTypeFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mimeTypeService" />
+	</bean>
+	<bean id="wsAdminTechnicalAccountFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.TechnicalAccountFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="technicalAccountService" />
+	</bean>
+	<bean id="wsAdminTechnicalAccountPermissionFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.TechnicalAccountPermissionFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="abstractDomainService" />
+		<constructor-arg ref="technicalAccountPermissionService" />
+	</bean>
+	<bean id="wsAdminUploadRequestFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.UploadRequestFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="uploadRequestService" />
+	</bean>
+	<bean id="wsAdminUploadPropositionFilterFacade"
+		class="com.t3c.anchel.core.facade.webservice.admin.impl.UploadPropositionFilterFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="uploadPropositionFilterService" />
+	</bean>
+	<bean id="wsAdminWelcomeMessagesFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.WelcomeMessagesFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="welcomeMessagesService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminMailActivationFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.MailActivationFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="mailActivationService" />
+	</bean>
+	<bean id="wsAuditLogEntryFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.AuditLogEntryAdminFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="auditLogEntryService" />
+	</bean>
+	<bean id="wsAdminStatisticFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.StatisticFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="statisticService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminDomainQuotaFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.DomainQuotaFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="domainQuotaService" />
+		<constructor-arg ref="containerQuotaService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminContainerQuotaFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.ContainerQuotaFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="containerQuotaService" />
+		<constructor-arg ref="abstractDomainService" />
+	</bean>
+	<bean id="wsAdminAccountQuotaFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.AccountQuotaFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="accountQuotaService" />
+	</bean>
+	<bean id="wsAdminUpgradeTaskFacade" class="com.t3c.anchel.core.facade.webservice.admin.impl.UpgradeTaskFacadeImpl">
+		<constructor-arg ref="accountService" />
+		<constructor-arg ref="upgradeTaskService" />
+	</bean>
+</beans>

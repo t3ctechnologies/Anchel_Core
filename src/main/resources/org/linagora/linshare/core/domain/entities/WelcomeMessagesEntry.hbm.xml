@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="languageType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.SupportedLanguage</param>
+		<param name="identifierMethod">getTapestryLocale</param>
+		<param name="valueOfMethod">fromTapestryLocale</param>
+	</typedef>
+	<class name="com.t3c.anchel.core.domain.entities.WelcomeMessagesEntry" table="welcome_messages_entry" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<property name="lang" column="lang" type="languageType" length="255" not-null="true" lazy="false" insert="false" update="false"/>
+		<property name="value" column="value" type="text" not-null="true" lazy="false"/>
+	</class>
+</hibernate-mapping>

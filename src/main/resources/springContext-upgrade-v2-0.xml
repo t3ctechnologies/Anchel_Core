@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+	default-autowire="no">
+
+	<bean id="adminUpgradeTaskRestService" class="com.t3c.anchel.webservice.admin.impl.UpgradeTaskRestServiceImpl">
+		<constructor-arg ref="wsAdminUpgradeTaskFacade" />
+		<constructor-arg ref="wsAsyncTaskFacade" />
+		<constructor-arg ref="wsBatchRunnerAsyncFacade" />
+		<constructor-arg ref="taskExecutor" />
+		<constructor-arg ref="upgradeTaskLogMongoRepository" />
+		<constructor-arg ref="batchRunner" />
+		<constructor-arg>
+			<list>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.DomainUuidUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="abstractDomainRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.DomainPoliciesUuidUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="domainPolicyRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.Sha256SumUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="documentRepository" />
+					<constructor-arg ref="threadEntryRepository" />
+					<constructor-arg ref="documentEntryBusinessService" />
+					<constructor-arg ref="fileDataStore" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.TopDomainQuotaUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="abstractDomainRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="domainQuotaBusinessService" />
+					<constructor-arg ref="containerQuotaBusinessService" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.SubDomainQuotaUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="abstractDomainRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="domainQuotaBusinessService" />
+					<constructor-arg ref="containerQuotaBusinessService" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.AccountQuotaUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="abstractDomainRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="accountQuotaBusinessService" />
+					<constructor-arg ref="containerQuotaBusinessService" />
+					<constructor-arg ref="documentEntryRepository" />
+					<constructor-arg ref="threadEntryRepository" />
+					<constructor-arg ref="operationHistoryBusinessService" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.FileDataStoreMigrationUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="fileDataStore" />
+					<constructor-arg ref="documentRepository" />
+					<constructor-arg value="${linshare.documents.storage.deduplication}" />
+					<constructor-arg ref="documentEntryRepository" />
+					<constructor-arg ref="threadEntryRepository" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.v2_0.ThreadToWorkgroupUpgradeTaskImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="threadRepository" />
+					<constructor-arg ref="threadEntryRepository" />
+					<constructor-arg ref="workGroupDocumentService" />
+					<constructor-arg ref="workGroupNodeMongoRepository" />
+					<constructor-arg ref="logEntryRepository" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.utils.UpgradeTaskBatchWrapperImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg value="UPGRADE_2_0_CLEANUP_EXPIRED_GUEST" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="deleteGuestBatch" />
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.utils.UpgradeTaskBatchWrapperImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg value="UPGRADE_2_0_CLEANUP_EXPIRED_ACCOUNT" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg>
+						<bean class="com.t3c.anchel.core.batches.impl.MarkUserToPurgeBatchImpl">
+							<constructor-arg ref="userService" />
+							<constructor-arg ref="accountRepository" />
+							<constructor-arg value="0" />
+						</bean>
+					</constructor-arg>
+				</bean>
+				<bean class="com.t3c.anchel.core.upgrade.utils.UpgradeTaskBatchWrapperImpl">
+					<constructor-arg ref="accountRepository" />
+					<constructor-arg value="UPGRADE_2_0_PURGE_ACCOUNT" />
+					<constructor-arg ref="upgradeTaskLogMongoRepository" />
+					<constructor-arg ref="purgeUserBatch" />
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

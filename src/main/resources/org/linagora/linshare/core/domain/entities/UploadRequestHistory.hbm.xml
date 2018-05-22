@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<typedef class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="uploadRequestHistoryEventType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.UploadRequestHistoryEventType</param>
+		<param name="identifierMethod">name</param>
+		<param name="valueOfMethod">fromString</param>
+	</typedef>
+	<class
+		name="com.t3c.anchel.core.domain.entities.UploadRequestHistory"
+		table="upload_request_history" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<property access="field" name="status" column="status"
+			not-null="true" lazy="false" type="uploadRequestStatus" />
+		<property name="statusUpdated" column="status_updated" type="boolean"
+			not-null="true" lazy="false" />
+		<property name="eventType" column="event_type" type="uploadRequestHistoryEventType"
+			not-null="true" lazy="false" />
+		<property name="uuid" column="uuid" type="string" length="255"
+			not-null="true" lazy="false" />
+		<property name="activationDate" column="activation_date"
+			type="timestamp" length="6" not-null="true" lazy="false" />
+		<property name="expiryDate" column="expiry_date" type="timestamp"
+			length="6" lazy="false" />
+		<property name="notificationDate" column="notification_date"
+			type="timestamp" length="6" lazy="false" />
+		<property name="maxDepositSize" column="max_deposit_size"
+			type="long" lazy="false" />
+		<property name="maxFileCount" column="max_file_count" type="integer"
+			lazy="false" />
+		<property name="maxFileSize" column="max_file_size" type="long"
+			lazy="false" />
+		<property name="uploadPropositionRequestUuid" column="upload_proposition_request_uuid"
+			type="string" length="255" not-null="false" lazy="false" />
+		<property name="canDelete" column="can_delete" type="boolean"
+			lazy="false" />
+		<property name="canClose" column="can_close" type="boolean"
+			lazy="false" />
+		<property name="canEditExpiryDate" column="can_edit_expiry_date"
+			type="boolean" lazy="false" />
+		<property name="locale" column="locale" type="string" length="255"
+			not-null="false" lazy="false" />
+		<property name="secured" column="secured" type="boolean"
+			lazy="false" />
+		<property name="creationDate" column="creation_date" type="timestamp"
+			length="6" not-null="true" lazy="false" />
+		<property name="modificationDate" column="modification_date"
+			type="timestamp" length="6" not-null="true" lazy="false" />
+		<property name="mailMessageID" column="mail_message_id" type="string"
+			length="255" not-null="false" lazy="false" />
+	</class>
+</hibernate-mapping>

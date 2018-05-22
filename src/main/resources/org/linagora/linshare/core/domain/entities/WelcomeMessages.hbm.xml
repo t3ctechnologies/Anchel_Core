@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<typedef
+		class="com.t3c.anchel.core.repository.hibernate.type.GenericEnumType" name="languageType">
+		<param name="enumClass">com.t3c.anchel.core.domain.constants.SupportedLanguage</param>
+		<param name="identifierMethod">getTapestryLocale</param>
+		<param name="valueOfMethod">fromTapestryLocale</param>
+	</typedef>
+	<class name="com.t3c.anchel.core.domain.entities.WelcomeMessages" table="welcome_messages" lazy="true">
+		<id name="id" column="id" type="long" unsaved-value="0">
+			<generator class="native">
+			</generator>
+		</id>
+		<property name="uuid" column="uuid" unique="true" type="string" length="255" not-null="true" lazy="false"/>
+		<property name="name" column="name" type="string" length="255" not-null="true" lazy="false"/>
+		<property name="description" column="description" type="text" not-null="true" lazy="false"/>
+		<property name="creationDate" column="creation_date" type="timestamp" not-null="true" lazy="false"/>
+		<property name="modificationDate" column="modification_date" type="timestamp" not-null="true" lazy="false"/>
+		<many-to-one name="domain" column="domain_id" class="com.t3c.anchel.core.domain.entities.AbstractDomain" not-null="true" lazy="proxy">
+		</many-to-one>
+		<map name="welcomeMessagesEntries" lazy="true" cascade="all" inverse="false">
+			<key column="welcome_messages_id" not-null="true" />
+			<map-key column="lang" type="languageType" />
+			<one-to-many
+				class="com.t3c.anchel.core.domain.entities.WelcomeMessagesEntry" />
+		</map>
+	</class>
+</hibernate-mapping>
