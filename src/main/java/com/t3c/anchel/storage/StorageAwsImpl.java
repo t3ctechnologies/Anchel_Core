@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
@@ -41,20 +42,13 @@ public class StorageAwsImpl extends StorageAdapterClass {
 
 	private static final Logger logger = LoggerFactory.getLogger(StorageAwsImpl.class);
 
-	public void DeleteFile(String specialId) {
+	public void DeleteFile(String specialId, String uuid) throws SQLException, AmazonServiceException, AmazonClientException {
 		credentials = new BasicAWSCredentials(this.accesskey, this.secretkey);
 		s3client = new AmazonS3Client(credentials);
-		try{
 			s3client.deleteObject(this.bucketname, specialId);
 			logger.debug("File with this {} id deleted successfully", specialId);
-			new AccessClass().update(specialId);
-		}
-		catch (AmazonClientException e) {
-			logger.error("Error with deleting file from amazon" + e.getMessage());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			new AccessClass().updateS3Bucket(specialId);
+			new AccessClass().updateS3Filename(uuid);
 	}
 
 	@Override

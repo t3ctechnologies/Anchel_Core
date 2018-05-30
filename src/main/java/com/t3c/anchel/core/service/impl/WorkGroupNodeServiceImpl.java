@@ -35,6 +35,7 @@ package com.t3c.anchel.core.service.impl;
 
 import java.io.File;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +46,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import com.amazonaws.AmazonClientException;
 import com.google.common.collect.Lists;
 import com.t3c.anchel.core.domain.constants.AuditLogEntryType;
 import com.t3c.anchel.core.domain.constants.LogAction;
@@ -339,12 +341,16 @@ public class WorkGroupNodeServiceImpl extends GenericWorkGroupNodeServiceImpl im
 		WorkGroupNode node = find(actor, owner, workGroup, workGroupNodeUuid, false);
 		checkDeletePermission(actor, owner, WorkGroupNode.class, BusinessErrorCode.WORK_GROUP_DOCUMENT_FORBIDDEN, node,
 				workGroup);
-		deleteNode(actor, owner, workGroup, node);
 		String uuid = null;
 		if (node instanceof WorkGroupDocument) {
 			uuid = ((WorkGroupDocument) node).getDocumentUuid();
 			String specialId = new AccessClass().TakeSpecialId(uuid);
-			new StorageAwsImpl().DeleteFile(specialId);
+			try {
+				new StorageAwsImpl().DeleteFile(specialId, uuid);
+				deleteNode(actor, owner, workGroup, node);
+			} catch (AmazonClientException | SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return node;
 	}

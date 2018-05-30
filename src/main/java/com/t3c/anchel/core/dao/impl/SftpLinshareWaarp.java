@@ -20,7 +20,7 @@ public class SftpLinshareWaarp {
 		String password = properties.getProperty("linshare.db.password");
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			String query = " insert into S3BUCKETMAPPING(filename,uuid,processedOn,deleted)" 
+			String query = " INSERT into S3FILENAMEHANDLER(filename,uuid,processedOn,deleted)" 
 							+ " values (?,?,?,?)";
 			preparedStmt = conn.prepareStatement(query);
 

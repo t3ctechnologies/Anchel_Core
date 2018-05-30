@@ -23,24 +23,35 @@ public class AccessClass {
 		password = properties.getProperty("linshare.db.password");
 	}
 
-	public void update(String specialKey) throws SQLException {
+	public void updateS3Bucket(String specialKey) throws SQLException {
 
 		try {
 			Connection conn = (Connection) DriverManager.getConnection(url, user, password);
-			String query = " update S3BUCKETMAPPING set deleted=1 where specialKey=?";
+			String query = " UPDATE S3BUCKETMAPPING set deleted=1 where specialKey=?";
 			PreparedStatement preparedStmt = conn.prepareStatement(query);
 			preparedStmt.setNString(1, specialKey);
 			preparedStmt.executeUpdate();
 			conn.close();
-		}
-
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public String TakeSpecialId(String file) {
+	public void updateS3Filename(String uuid) throws SQLException {
+
+		try {
+			Connection conn = (Connection) DriverManager.getConnection(url, user, password);
+			String query = " UPDATE S3FILENAMEHANDLER set deleted=1 where uuid=?";
+			PreparedStatement preparedStmt = conn.prepareStatement(query);
+			preparedStmt.setNString(1, uuid);
+			preparedStmt.executeUpdate();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String TakeSpecialId(String uuid) {
 		String splId = null;
 		try {
 			Connection conn = (Connection) DriverManager.getConnection(url, user, password);
@@ -48,7 +59,7 @@ public class AccessClass {
 
 			PreparedStatement preparedStmt = conn.prepareStatement(query);
 
-			preparedStmt.setNString(1, file);
+			preparedStmt.setNString(1, uuid);
 
 			ResultSet rs = preparedStmt.executeQuery();
 			rs.next();

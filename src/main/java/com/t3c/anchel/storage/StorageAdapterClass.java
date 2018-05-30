@@ -2,6 +2,7 @@ package com.t3c.anchel.storage;
 
 import java.io.FileNotFoundException;
 import java.net.BindException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -51,7 +52,7 @@ public abstract class StorageAdapterClass {
 		return null;
 	}
 
-	public abstract void DeleteFile(String specialId);
+	public abstract void DeleteFile(String specialId, String uuid) throws SQLException;
 
 	public abstract StorageAccessDTO sendFile(String filePath, String folderName, String key)
 			throws FileNotFoundException;

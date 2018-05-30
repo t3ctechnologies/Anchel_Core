@@ -44,6 +44,7 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -64,6 +65,7 @@ import org.linagora.LinThumbnail.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.amazonaws.AmazonClientException;
 import com.t3c.anchel.core.business.service.DocumentEntryBusinessService;
 import com.t3c.anchel.core.business.service.SignatureBusinessService;
 import com.t3c.anchel.core.business.service.UploadRequestEntryBusinessService;
@@ -344,11 +346,17 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 		}
 		logger.debug("Deleting document entry: " + documentEntry.getUuid());
 		Account owner = documentEntry.getEntryOwner();
-		owner.getEntries().remove(documentEntry);
-		documentEntryRepository.delete(documentEntry);
 		Document document = documentEntry.getDocument();
 		String specialId = new AccessClass().TakeSpecialId(document.getUuid());
-		new StorageAwsImpl().DeleteFile(specialId);
+		try {
+			new StorageAwsImpl().DeleteFile(specialId, document.getUuid());
+			owner.getEntries().remove(documentEntry);
+			documentEntryRepository.delete(documentEntry);
+		} catch (AmazonClientException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Deleted succesfu");
 	}
 
 	@Override
