@@ -462,6 +462,7 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 		String sha256sum = SHA256CheckSumFileStream(myFile);
 		List<Document> documents = documentRepository.findBySha256Sum(sha256sum);
 		Document doc = null;
+		logger.debug("FTPClient integration is started");
 		if (documents != null && documents.size() > 0) {
 			doc = documents.get(0);
 			String uuidfile = myFile.getParent() + File.separator.concat(doc.getUuid());
@@ -479,7 +480,7 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 			myFile.renameTo(new File(uuidfile));
 			addWaarpInfo(uuidfile, myFile.getPath(), fileName);
 			metadata = fileDataStore.add(myFile, metadata);
-
+			logger.debug("FTPClient integration is completed");
 			// Computing and storing thumbnail
 			FileMetaData metadataThmb = computeAndStoreThumbnail(owner, myFile, metadata, fileName);
 			try {
@@ -760,6 +761,7 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 	public void addWaarpInfo(String uuidFile, String tempFile, String filename) {
 
 		try {
+			logger.debug("Linshare started uploading file into waarp");
 			Properties properties = new FtpClientConfiguration().getclientProperties();
 			String server = properties.getProperty("com.sgs.waarp.gatewayserver");
 			String user = properties.getProperty("com.sgs.waarp.user");
@@ -769,6 +771,7 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 			String[] configArray = { uuidFile, mode, server, user, password, account };
 			new SftpLinshareWaarp().insert(new File(uuidFile).getName(), filename);
 			FtpClient.init(configArray);
+			logger.debug("File uploading into waarp is completed");
 			new File(uuidFile).renameTo(new File(tempFile));
 
 		} catch (IOException e) {
