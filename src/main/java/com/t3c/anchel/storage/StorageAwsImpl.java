@@ -17,8 +17,11 @@ import org.slf4j.LoggerFactory;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -32,19 +35,29 @@ public class StorageAwsImpl extends StorageAdapterClass {
 	String secretkey = null;
 	String bucketname = null;
 	Properties properties = null;
+	String region = null;
 
 	public StorageAwsImpl() {
 		properties = new FtpClientConfiguration().getclientProperties();
 		this.accesskey = properties.getProperty(SMConstants.ACCESS_KEY);
 		this.secretkey = properties.getProperty(SMConstants.SECRET_KEY);
 		this.bucketname = properties.getProperty(SMConstants.BUCKET_NAME);
+		this.region = properties.getProperty(SMConstants.CLIENT_REGION);
+		
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(StorageAwsImpl.class);
 
 	public void DeleteFile(String specialId, String uuid) throws SQLException, AmazonServiceException, AmazonClientException {
 		credentials = new BasicAWSCredentials(this.accesskey, this.secretkey);
-		s3client = new AmazonS3Client(credentials);
+		s3client = AmazonS3ClientBuilder.standard().withCredentials(new AWSCredentialsProvider() {
+			public void refresh() {
+			}
+
+			public AWSCredentials getCredentials() {
+				return credentials;
+			}
+		}).withRegion(this.region).build();
 			s3client.deleteObject(this.bucketname, specialId);
 			logger.debug("File with this {} id deleted successfully", specialId);
 			new AccessClass().updateS3Bucket(specialId);
