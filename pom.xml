@@ -110,6 +110,9 @@
 			<groupId>org.linagora</groupId>
 			<artifactId>LinThumbnail</artifactId>
 			<version>1.3</version>
+			<!-- below 2 lines are added for TRAVIS purpose -->
+			<scope>system</scope>
+			<systemPath>${TRAVIS_BUILD_DIR}/src/main/webapp/WEB-INF/lib/LinThumbnail-1.3.jar</systemPath>
 			<exclusions>
 				<exclusion>
 					<artifactId>slf4j-jdk14</artifactId>
