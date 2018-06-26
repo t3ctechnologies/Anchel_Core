@@ -1,6 +1,9 @@
 sudo: required
 language: java
 install: true
+env:
+  global:
+  - TERM=dumb
 script: mvn clean package -DskipTests=true -Ph2,local
 services:
   - docker
