@@ -10,6 +10,8 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
+after_success:
+  - echo $TRAVIS_BUILD_NUMBER
 addons:
   artifacts: true
-    
+
