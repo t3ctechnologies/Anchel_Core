@@ -511,6 +511,13 @@
 			<artifactId>jcr</artifactId>
 			<version>2.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-jcr</artifactId>
@@ -1110,8 +1117,8 @@
 			</plugin>
 			<!-- it does not seem to work <plugin> <groupId>org.apache.tapestry</groupId> 
 				<artifactId>tapestry-component-report</artifactId> <version>${tapestry-release-version}</version> 
-				<configuration> <rootPackage>com.t3c.anchel.view.tapestry</rootPackage> 
-				</configuration> </plugin> -->
+				<configuration> <rootPackage>com.t3c.anchel.view.tapestry</rootPackage> </configuration> 
+				</plugin> -->
 		</plugins>
 	</reporting>
 	<profiles>
