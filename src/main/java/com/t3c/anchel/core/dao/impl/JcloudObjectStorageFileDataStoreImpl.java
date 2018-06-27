@@ -185,6 +185,34 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 		Properties properties = new FtpClientConfiguration().getclientProperties();
 		String linshare_base = properties.getProperty("com.sgs.linshare.bucketDrive");
 		String fileName = linshare_base.concat(metadata.getBucketUuid() + File.separator).concat(metadata.getUuid());
+		String server = properties.getProperty("com.sgs.waarp.gatewayserver");
+		String user = properties.getProperty("com.sgs.waarp.user");
+		String password = properties.getProperty("com.sgs.waarp.password");
+		String account = properties.getProperty("com.sgs.waarp.accountname");
+		String mode = properties.getProperty("com.sgs.waarp.upload.mode");
+		String[] configArray = { fileName, mode, server, user, password, account };
+		String error_path = properties.getProperty("com.sgs.waarp.upload.path");
+		File errorFile = new File(error_path.concat(metadata.getUuid()).concat("_errorFile"));
+		File successFile = new File(error_path.concat(metadata.getUuid()).concat("_successFile"));
+		try {
+			FtpClient.init(configArray);
+			for (int i = 10; i < 100; i++) {
+				if (successFile.exists()) {
+					successFile.delete();
+					break;
+				} else if (errorFile.exists()) {
+					errorFile.delete();
+					throw new TechnicalException(TechnicalErrorCode.GENERIC, "Can not add a new file : ");
+				} else {
+					Thread.sleep(i * 1000);
+				}
+			}
+
+		} catch (IOException | InterruptedException e) {
+			logger.error(e.getMessage(), e);
+			throw new TechnicalException(TechnicalErrorCode.GENERIC, "Can not add a new file : " + e.getMessage());
+		}
+		logger.debug("File uploaded to waarp successfully");
 
 		// TODO Deleting linshare local file
 		File linshare_file = new File(fileName);
@@ -208,6 +236,9 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 		Properties properties = new FtpClientConfiguration().getclientProperties();
 		String linshare_base = properties.getProperty("com.sgs.linshare.bucketDrive");
 		String fileName = linshare_base.concat(containerName + File.separator).concat(metadata.getUuid());
+		String error_path = properties.getProperty("com.sgs.waarp.download.errorpath");
+		File errFile = new File(error_path.concat(metadata.getUuid().concat("_errorFile")));
+		InputStream inputStream = null;
 		try {
 			String server = properties.getProperty("com.sgs.waarp.gatewayserver");
 			String user = properties.getProperty("com.sgs.waarp.user");
@@ -216,13 +247,17 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 			String mode = properties.getProperty("com.sgs.waarp.download.mode");
 			String[] configArray = { fileName, mode, server, user, password, account };
 			String gateway_path = properties.getProperty("com.sgs.waarp.gateway_path");
-			String gateway_file = gateway_path.concat(new File(fileName).getName());
-			boolean secondMethodStatus = false;
+			String gateway_file_path = gateway_path.concat(new File(fileName).getName());
+			File gatewayFile = new File(gateway_file_path);
 			FtpClient.init(configArray);
-			for (int i = 10; i < 1000; i++) {
-				if (new File(gateway_file).exists()) {
+			boolean secondMethodStatus = false;
+			for (int i = 10; i < 100; i++) {
+				if (gatewayFile.exists()) {
 					secondMethodStatus = true;
 					break;
+				} else if (errFile.exists()) {
+					errFile.delete();
+					throw new TechnicalException(TechnicalErrorCode.GENERIC, "Can not get a file ");
 				} else {
 					Thread.sleep(i * 1000);
 				}
@@ -230,28 +265,30 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 			if (secondMethodStatus) {
 				FtpClient.init(configArray);
 			}
-			System.err.println("********************FILE DOWNLOADING IS COMPLETED*******************");
 			// TODO Deleting GatewayFile
-			new File(gateway_file).delete();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
+			if (gatewayFile.exists()) {
+				gatewayFile.delete();
+			}
 
-		BlobStore blobStore = getBlobStore(containerName);
-		Date start = new Date();
-		Blob blobRetrieved = blobStore.getBlob(containerName, metadata.getUuid());
-		stats(start, "blobRetrieved");
-		InputStream inputStream = null;
-		try {
+			// Linshare file download
+			BlobStore blobStore = getBlobStore(containerName);
+			Date start = new Date();
+			Blob blobRetrieved = blobStore.getBlob(containerName, metadata.getUuid());
+			stats(start, "blobRetrieved");
+
 			inputStream = blobRetrieved.getPayload().openStream();
 			File linshare_file = new File(fileName);
 			if (linshare_file.exists()) {
 				linshare_file.delete();
 			}
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			logger.error(e.getMessage(), e);
+			if (errFile.exists()) {
+				errFile.delete();
+			}
 			throw new TechnicalException(TechnicalErrorCode.GENERIC, "Can not get a file : " + e.getMessage());
 		}
+
 		return inputStream;
 	}
 

@@ -49,9 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -69,9 +67,7 @@ import com.amazonaws.AmazonClientException;
 import com.t3c.anchel.core.business.service.DocumentEntryBusinessService;
 import com.t3c.anchel.core.business.service.SignatureBusinessService;
 import com.t3c.anchel.core.business.service.UploadRequestEntryBusinessService;
-import com.t3c.anchel.core.common.FtpClientConfiguration;
 import com.t3c.anchel.core.dao.FileDataStore;
-import com.t3c.anchel.core.dao.impl.SftpLinshareWaarp;
 import com.t3c.anchel.core.domain.constants.FileMetaDataKind;
 import com.t3c.anchel.core.domain.entities.Account;
 import com.t3c.anchel.core.domain.entities.Document;
@@ -90,7 +86,6 @@ import com.t3c.anchel.core.repository.DocumentEntryRepository;
 import com.t3c.anchel.core.repository.DocumentRepository;
 import com.t3c.anchel.core.service.TimeStampingService;
 import com.t3c.anchel.core.utils.AESCrypt;
-import com.t3c.anchel.ftp.client.testcode.FtpClient;
 import com.t3c.anchel.mongo.entities.WorkGroupDocument;
 import com.t3c.anchel.mongo.entities.WorkGroupNode;
 import com.t3c.anchel.mongo.entities.mto.AccountMto;
@@ -460,54 +455,32 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 	private Document createDocument(Account owner, File myFile, Long size, String fileName, String timeStampingUrl,
 			String mimeType) throws BusinessException {
 		String sha256sum = SHA256CheckSumFileStream(myFile);
-		List<Document> documents = documentRepository.findBySha256Sum(sha256sum);
-		Document doc = null;
 		logger.debug("FTPClient integration is started");
-		if (documents != null && documents.size() > 0) {
-			doc = documents.get(0);
-			String uuidfile = myFile.getParent() + File.separator.concat(doc.getUuid());
-			myFile.renameTo(new File(uuidfile));
-			addWaarpInfo(uuidfile, myFile.getPath(), fileName);
-		}
-		if (documents.isEmpty() || !deduplication) {
-			// Storing file
-			FileMetaData metadata = new FileMetaData(FileMetaDataKind.DATA, mimeType, size, fileName);
-			// TODO Calling FtpClient
-			if (metadata.getUuid() == null) {
-				metadata.setUuid(UUID.randomUUID().toString());
+		FileMetaData metadata = new FileMetaData(FileMetaDataKind.DATA, mimeType, size, fileName);
+		metadata = fileDataStore.add(myFile, metadata);
+		logger.debug("FTPClient integration is completed");
+
+		// Computing and storing thumbnail
+		FileMetaData metadataThmb = computeAndStoreThumbnail(owner, myFile, metadata, fileName);
+		try {
+			// want a timestamp on doc ?
+			byte[] timestampToken = null;
+			if (timeStampingUrl != null) {
+				timestampToken = getTimeStamp(fileName, myFile, timeStampingUrl);
 			}
-			String uuidfile = myFile.getParent() + File.separator.concat(metadata.getUuid());
-			myFile.renameTo(new File(uuidfile));
-			addWaarpInfo(uuidfile, myFile.getPath(), fileName);
-			metadata = fileDataStore.add(myFile, metadata);
-			logger.debug("FTPClient integration is completed");
-			// Computing and storing thumbnail
-			FileMetaData metadataThmb = computeAndStoreThumbnail(owner, myFile, metadata, fileName);
-			try {
-				// want a timestamp on doc ?
-				byte[] timestampToken = null;
-				if (timeStampingUrl != null) {
-					timestampToken = getTimeStamp(fileName, myFile, timeStampingUrl);
-				}
-				// add an document for the file in DB
-				Document document = new Document(metadata);
-				document.setSha256sum(sha256sum);
-				if (metadataThmb != null)
-					document.setThmbUuid(metadataThmb.getUuid());
-				document.setTimeStamp(timestampToken);
-				return documentRepository.create(document);
-			} catch (Exception e) {
-				if (metadata != null)
-					fileDataStore.remove(metadata);
-				if (metadataThmb != null)
-					fileDataStore.remove(metadataThmb);
-				throw e;
-			}
-		} else {
-			// we return the first one, the others will be removed by time
-			// (expiration,
-			// users, ...)
-			return documents.get(0);
+			// add an document for the file in DB
+			Document document = new Document(metadata);
+			document.setSha256sum(sha256sum);
+			if (metadataThmb != null)
+				document.setThmbUuid(metadataThmb.getUuid());
+			document.setTimeStamp(timestampToken);
+			return documentRepository.create(document);
+		} catch (Exception e) {
+			if (metadata != null)
+				fileDataStore.remove(metadata);
+			if (metadataThmb != null)
+				fileDataStore.remove(metadataThmb);
+			throw e;
 		}
 	}
 
@@ -756,27 +729,4 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 		return false;
 	}
 
-	// TODO Adding file info into SftpLinshareWaarp and Calling FtpClient
-
-	public void addWaarpInfo(String uuidFile, String tempFile, String filename) {
-
-		try {
-			logger.debug("Linshare started uploading file into waarp");
-			Properties properties = new FtpClientConfiguration().getclientProperties();
-			String server = properties.getProperty("com.sgs.waarp.gatewayserver");
-			String user = properties.getProperty("com.sgs.waarp.user");
-			String password = properties.getProperty("com.sgs.waarp.password");
-			String account = properties.getProperty("com.sgs.waarp.accountname");
-			String mode = properties.getProperty("com.sgs.waarp.upload.mode");
-			String[] configArray = { uuidFile, mode, server, user, password, account };
-			new SftpLinshareWaarp().insert(new File(uuidFile).getName(), filename);
-			FtpClient.init(configArray);
-			logger.debug("File uploading into waarp is completed");
-			new File(uuidFile).renameTo(new File(tempFile));
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 }
