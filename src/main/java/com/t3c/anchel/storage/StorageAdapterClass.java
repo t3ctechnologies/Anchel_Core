@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.t3c.anchel.core.common.FtpClientConfiguration;
 
 public abstract class StorageAdapterClass {
@@ -52,29 +49,19 @@ public abstract class StorageAdapterClass {
 		return null;
 	}
 
-	public abstract void DeleteFile(String specialId, String uuid) throws SQLException;
+	public abstract void DeleteFile(String uuid) throws SQLException;
 
-	public abstract StorageAccessDTO sendFile(String filePath, String folderName, String key)
-			throws FileNotFoundException;
+	public abstract void sendFile(String filePath, String folderName, String key) throws FileNotFoundException;
 
 	public abstract void GetAll(String bucketName, String folderName);
 
-	public StorageAccessDTO get(String id) {
+	public void get(String id) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public boolean delete(StorageAccessDTO storageaccess) {
-		credentials = new BasicAWSCredentials(this.accesskey, this.secretkey);
-		s3client = new AmazonS3Client(credentials);
-		java.util.List<S3ObjectSummary> fileList = (List<S3ObjectSummary>) s3client.listObjects(this.bucketName,
-				storageaccess.getFolder());
-		for (S3ObjectSummary file : fileList) {
+	public boolean delete(String str) {
 
-			s3client.deleteObject(this.bucketName, file.getKey());
-		}
-	
 		return false;
 	}
 

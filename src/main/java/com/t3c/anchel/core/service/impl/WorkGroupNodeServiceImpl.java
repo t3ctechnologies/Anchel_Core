@@ -71,7 +71,6 @@ import com.t3c.anchel.mongo.entities.logs.WorkGroupNodeAuditLogEntry;
 import com.t3c.anchel.mongo.entities.mto.AccountMto;
 import com.t3c.anchel.mongo.entities.mto.WorkGroupLightNode;
 import com.t3c.anchel.mongo.repository.WorkGroupNodeMongoRepository;
-import com.t3c.anchel.storage.AccessClass;
 import com.t3c.anchel.storage.StorageAwsImpl;
 
 public class WorkGroupNodeServiceImpl extends GenericWorkGroupNodeServiceImpl implements WorkGroupNodeService {
@@ -344,9 +343,8 @@ public class WorkGroupNodeServiceImpl extends GenericWorkGroupNodeServiceImpl im
 		String uuid = null;
 		if (node instanceof WorkGroupDocument) {
 			uuid = ((WorkGroupDocument) node).getDocumentUuid();
-			String specialId = new AccessClass().TakeSpecialId(uuid);
 			try {
-				new StorageAwsImpl().DeleteFile(specialId, uuid);
+				new StorageAwsImpl().DeleteFile(uuid);
 				deleteNode(actor, owner, workGroup, node);
 			} catch (AmazonClientException | SQLException e) {
 				e.printStackTrace();

@@ -90,7 +90,6 @@ import com.t3c.anchel.mongo.entities.WorkGroupDocument;
 import com.t3c.anchel.mongo.entities.WorkGroupNode;
 import com.t3c.anchel.mongo.entities.mto.AccountMto;
 import com.t3c.anchel.mongo.repository.WorkGroupNodeMongoRepository;
-import com.t3c.anchel.storage.AccessClass;
 import com.t3c.anchel.storage.StorageAwsImpl;
 
 public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessService {
@@ -342,9 +341,8 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 		logger.debug("Deleting document entry: " + documentEntry.getUuid());
 		Account owner = documentEntry.getEntryOwner();
 		Document document = documentEntry.getDocument();
-		String specialId = new AccessClass().TakeSpecialId(document.getUuid());
 		try {
-			new StorageAwsImpl().DeleteFile(specialId, document.getUuid());
+			new StorageAwsImpl().DeleteFile(document.getUuid());
 			owner.getEntries().remove(documentEntry);
 			documentEntryRepository.delete(documentEntry);
 		} catch (AmazonClientException | SQLException e) {
