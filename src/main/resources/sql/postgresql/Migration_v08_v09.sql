@@ -112,19 +112,19 @@ alter table linshare_mail_subjects add constraint FDD6CCCABCA44789EB
     alter table linshare_log_entry add column target_domain varchar(255);
 
 
--- login is e-mail address 'root@localhost.localdomain' and password is 'adminlinshare'
+-- login is e-mail address 'root@anchel.io' and password is 'adminlinshare'
 -- Update the admin role 'root' from 'admin' to 'super admin' 
-UPDATE linshare_user SET role_id = 3 where login ='root@localhost.localdomain' OR mail ='root@localhost.localdomain' ;
+UPDATE linshare_user SET role_id = 3 where login ='root@anchel.io' OR mail ='root@anchel.io' ;
 
 
 -- insert in the db the super admin user if it does not exist
 
 INSERT INTO linshare_user(user_id, user_type_id, login, first_name, last_name, mail, creation_date, role_id, password, expiry_date, can_upload, can_create_guest)
-        SELECT  (SELECT nextVal('hibernate_sequence')), 0, 'root@localhost.localdomain', 'Administrator', 'Anchel', 'root@localhost.localdomain', '2009-01-01', 3, 'JYRd2THzjEqTGYq3gjzUh2UBso8=', '2019-01-01', false,false
+        SELECT  (SELECT nextVal('hibernate_sequence')), 0, 'root@anchel.io', 'Administrator', 'Anchel', 'root@anchel.io', '2009-01-01', 3, '0xj0Rznc7WZ5OxpgMCgTOnauaA4=', '2019-01-01', false,false
         WHERE NOT EXISTS
         (
-                SELECT 0 from linshare_user where login ='root@localhost.localdomain' 
-			OR mail ='root@localhost.localdomain'
+                SELECT 0 from linshare_user where login ='root@anchel.io' 
+			OR mail ='root@anchel.io'
         );
 
 

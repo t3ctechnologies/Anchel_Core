@@ -236,6 +236,7 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 		Properties properties = new FtpClientConfiguration().getclientProperties();
 		String linshare_base = properties.getProperty("com.sgs.linshare.bucketDrive");
 		String fileName = linshare_base.concat(containerName + File.separator).concat(metadata.getUuid());
+		File linshare_file = new File(fileName);
 		String error_path = properties.getProperty("com.sgs.waarp.download.errorpath");
 		File errFile = new File(error_path.concat(metadata.getUuid().concat("_errorFile")));
 		InputStream inputStream = null;
@@ -247,12 +248,14 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 			String mode = properties.getProperty("com.sgs.waarp.download.mode");
 			String[] configArray = { fileName, mode, server, user, password, account };
 			String gateway_path = properties.getProperty("com.sgs.waarp.gateway_path");
-			String gateway_file_path = gateway_path.concat(new File(fileName).getName());
+			String gateway_file_path = gateway_path.concat(metadata.getUuid());
 			File gatewayFile = new File(gateway_file_path);
+			File successFile = new File(gateway_file_path.concat("_successFile"));
 			FtpClient.init(configArray);
 			boolean secondMethodStatus = false;
 			for (int i = 10; i < 100; i++) {
-				if (gatewayFile.exists()) {
+				if (successFile.exists()) {
+					successFile.delete();
 					secondMethodStatus = true;
 					break;
 				} else if (errFile.exists()) {
@@ -277,7 +280,7 @@ public class JcloudObjectStorageFileDataStoreImpl implements FileDataStore {
 			stats(start, "blobRetrieved");
 
 			inputStream = blobRetrieved.getPayload().openStream();
-			File linshare_file = new File(fileName);
+			
 			if (linshare_file.exists()) {
 				linshare_file.delete();
 			}
