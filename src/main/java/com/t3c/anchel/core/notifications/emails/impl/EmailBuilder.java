@@ -331,8 +331,8 @@ public abstract class EmailBuilder implements IEmailBuilder {
 			container.setSubject(subject);
 			container.setContent(body);
 
-			//container.setFrom(getFromMailAddress(emailCtx.getFromDomain()));
-			container.setFrom("dayanand.k@shrigowri.com");
+			container.setFrom(getFromMailAddress(emailCtx.getFromDomain()));
+			//container.setFrom("dayanand.k@shrigowri.com");
 			container.setReplyTo(emailCtx.getMailReplyTo());
 			container.setRecipient(emailCtx.getMailRcpt());
 
